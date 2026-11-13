@@ -1,0 +1,484 @@
+<!doctype html>
+<!--
+  =============================================================================
+  PÁGINA DEL SITIO DE TEJAS (TRUVEC)
+  -----------------------------------------------------------------------------
+  Este archivo tiene el CONTENIDO: textos, imágenes, videos y la estructura.
+  - El aspecto (colores, tamaños, posiciones) está en src/style.css.
+  - El movimiento y la lógica (scroll, cálculo, envío) están en src/main.js.
+
+  Cómo se conectan los tres archivos:
+    class="boton"    → en style.css se escribe  .boton { ... }
+    id="cotizar"     → en style.css  #cotizar { ... }   y en main.js  $('#cotizar')
+    data-material="pc" → atributo propio que lee main.js (los "data-" no se ven)
+
+  Orden de la página (cada <section> tiene un id; el menú salta a esos id):
+    0. Pantalla de carga        #carga
+    -  Barra superior y botón de WhatsApp
+    1. Portada (video con scroll)          #portada
+    2. Policarbonato (video con scroll)    #policarbonato
+    3. Materiales (3 tarjetas)             #materiales
+    4. Por qué cambiar de techo            #ventajas
+    5. Cita                                #propuesta
+    6. Comparador (tabla)                  #comparador
+    7. Clima de la sierra                  #clima
+    8. Obras                               #obras
+    9. Cotizar                             #cotizar
+   10. Preguntas                           #preguntas
+    -  Pie con la palabra TRUVEC
+
+  Las imágenes y videos están en la carpeta public/. En el HTML se escriben
+  sin "public": /img/material/pc.webp = public/img/material/pc.webp
+  =============================================================================
+-->
+<html lang="es">
+<head>
+  <!-- Datos de la página que no se ven: codificación de letras, ajuste a la
+       pantalla del celular, título de la pestaña y descripción para Google. -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Truvec · Tejas de polipropileno, policarbonato y PVC</title>
+  <meta name="description" content="Tejas y láminas de polipropileno, policarbonato y PVC para casas, garajes y bodegas.">
+  <!-- Enlace a la hoja de estilos -->
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+<!-- =========================================================================
+     0. PANTALLA DE CARGA
+     Cubre todo hasta que los videos y fotos terminan de cargar.
+     CSS: sección 3 (#carga, .carga-...).
+     JS:  main.js sección 0 actualiza #cargaPct (número) y #cargaBarra (línea).
+     ========================================================================= -->
+<div id="carga" role="status" aria-live="polite">
+  <p class="carga-marca">Truvec</p>
+  <p id="cargaPct" class="carga-pct">0 %</p>
+  <div class="carga-linea"><span id="cargaBarra"></span></div>
+</div>
+
+<!-- =========================================================================
+     BARRA SUPERIOR (fija arriba)
+     CSS: sección 4 (.barra, .logo, .menu, .menu-boton).
+     - Logo: "Truvec" con "IFT" en subíndice (<sub>). Al tocarlo vuelve al inicio.
+     - Menú: cada href="#..." salta a la <section> con ese id.
+       PARA AGREGAR UNA SECCIÓN AL MENÚ: copiar una línea <a> y cambiar el
+       href por el id de la sección y el texto visible.
+     - Botón de tres rayas: sólo se ve en celular; main.js "Menú en celular"
+       lo abre y cierra.
+     ========================================================================= -->
+<header class="barra">
+  <a href="#portada" class="logo" aria-label="Truvec, de IFT: ir al inicio">Truvec<sub>IFT</sub></a>
+  <nav class="menu" id="menu" aria-label="Secciones">
+    <a href="#materiales">Materiales</a>
+    <a href="#ventajas">Ventajas</a>
+    <a href="#comparador">Comparador</a>
+    <a href="#obras">Obras</a>
+    <a href="#preguntas">Preguntas</a>
+  </nav>
+  <a href="#cotizar" class="boton boton-chico">Cotizar</a>
+  <button type="button" class="menu-boton" aria-controls="menu" aria-expanded="false"><span></span><span></span><span class="oculto">Menú</span></button>
+</header>
+
+<!-- BOTÓN FIJO DE WHATSAPP (abajo a la derecha).
+     El número NO se escribe aquí: main.js le pone el enlace a todo elemento con
+     data-wa, usando la constante WHATSAPP (main.js sección 5).
+     El <svg> es el dibujo del ícono. CSS: .wa (sección 4). -->
+<a class="wa" data-wa href="https://wa.me/" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.6c-2 0-4-.5-5.7-1.6l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6Zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.6 5.8 5 2.1.9 3 1 4 .8.7-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.1-.3-.2-.6-.4Z"/></svg>
+  <span>WhatsApp</span>
+</a>
+
+<!-- Línea naranja de avance arriba de todo (crece al bajar). JS: main.js, #avance. -->
+<div class="avance"><span id="avance"></span></div>
+
+<main>
+
+<!-- =========================================================================
+     1. PORTADA: VIDEO QUE AVANZA CON EL SCROLL
+     No es un <video>: son 120 fotos (fotogramas) que main.js y secuencia.js
+     dibujan en el <canvas> según cuánto se baja.
+       data-frames="portada" → carpeta public/frames/portada/
+       data-total="120"      → cuántos fotogramas hay
+       data-pantallas="5"    → cuánto hay que bajar para recorrerlo (5 pantallas)
+     Cada texto .cap lleva data-tramo="inicio,fin": entre qué parte del
+     recorrido aparece (0 = inicio, 1 = final). Ej.: "0.28,0.52" aparece
+     pasado el 28 % y se va al 52 %.
+     CSS: sección 5 (.escena, .velo, .cap).
+     ========================================================================= -->
+<section id="portada" class="escena" data-frames="portada" data-total="120" data-pantallas="5">
+  <canvas></canvas>
+  <!-- Velo: degradado oscuro encima del video para que se lea el texto -->
+  <div class="velo"></div>
+  <div class="cap cap-centro" data-tramo="0,0.24">
+    <p class="antetitulo">Polipropileno · Policarbonato · PVC</p>
+    <h1>Un techo<br>para cada casa</h1>
+    <p class="indicacion">Desplazar para recorrer</p>
+  </div>
+  <div class="cap cap-abajo" data-tramo="0.28,0.52">
+    <h2>Polipropileno</h2><p>Para la casa: teja con relieve y color.</p>
+  </div>
+  <div class="cap cap-abajo cap-der" data-tramo="0.56,0.76">
+    <h2>Policarbonato</h2><p>Para el garaje y la pérgola: cubre y deja pasar la luz.</p>
+  </div>
+  <div class="cap cap-abajo" data-tramo="0.8,1">
+    <h2>PVC</h2><p>Para la bodega y el taller: lámina resistente al agua.</p>
+  </div>
+</section>
+
+<!-- =========================================================================
+     2. POLICARBONATO: SEGUNDO VIDEO CON SCROLL
+     Igual que la portada: 82 fotogramas de public/frames/pc/, 3 pantallas.
+     El panel de texto va a la derecha (.panel-der) y el velo oscuro también
+     (.velo-der).
+     El botón lleva data-material="pc": al tocarlo, main.js deja elegido
+     "Policarbonato" en la calculadora de Cotizar.
+     ========================================================================= -->
+<section id="policarbonato" class="escena" data-frames="pc" data-total="82" data-pantallas="3">
+  <canvas></canvas>
+  <div class="velo velo-lado velo-der"></div>
+  <article class="panel panel-der" data-tramo="0.08,1">
+    <p class="numero">· Policarbonato</p>
+    <h2>Cubre sin apagar la luz</h2>
+    <ul>
+      <li>Para garajes, pérgolas, patios y tragaluces.</li>
+      <li>Deja pasar la luz natural al espacio cubierto.</li>
+      <li>La sombra se dibuja suave sobre el piso.</li>
+    </ul>
+    <p class="ficha pendiente">Porcentaje de luz y espesores: pendientes de la ficha técnica.</p>
+    <a href="#cotizar" class="boton" data-material="pc">Cotizar policarbonato</a>
+  </article>
+</section>
+
+<!-- =========================================================================
+     3. MATERIALES
+     Cada material es un bloque <div class="mat"> con dos partes:
+       a) .mat-tarjeta: tarjeta de color con la foto, el nombre, 3 rasgos,
+          los usos y el enlace "Cotizar ›".
+       b) .mat-video:   texto largo a la izquierda y video a la derecha.
+     El COLOR de cada tarjeta se cambia en style="--c: #......".
+     Los videos <video> se reproducen solos al verse (main.js sección 3).
+     data-cargar → la pantalla de carga espera a que esa foto o video cargue.
+     CSS: sección 6.
+     PARA AGREGAR UN MATERIAL: copiar un <div class="mat"> completo, desde su
+     apertura hasta su cierre, y cambiar textos, foto, video y color.
+     ========================================================================= -->
+<section id="materiales" class="materiales">
+  <div class="materiales-cabecera">
+    <p class="antetitulo">Materiales</p>
+    <h2 class="titulo-grande">Tres materiales, tres formas de cubrir</h2>
+  </div>
+
+  <!-- 3.1 POLICARBONATO (tarjeta celeste) -->
+  <div class="mat" id="mat-pc" style="--c: #c3e2e6">
+    <article class="mat-tarjeta">
+      <figure class="mat-imagen">
+        <img class="mat-foto" src="/img/material/pc.webp" alt="Láminas de policarbonato alveolar en varios colores" data-cargar>
+      </figure>
+      <div class="mat-texto">
+        <h2>Policarbonato</h2>
+        <!-- Los 3 rasgos: <b> es la palabra en mayúsculas, <span> la descripción -->
+        <ul class="mat-rasgos">
+          <li><b>Translúcido</b><span>Deja pasar la luz natural.</span></li>
+          <li><b>Liviano</b><span>Se carga y se instala con facilidad.</span></li>
+          <li><b>Versátil</b><span>Alveolar u ondulado, en varios colores.</span></li>
+        </ul>
+        <!-- Usos: cada <li> es una etiqueta redondeada -->
+        <div class="mat-usos"><b>Usos</b><ul><li>Patios y pérgolas</li><li>Remodelación y cambio de techo</li></ul></div>
+        <a href="#cotizar" class="mat-enlace" data-material="pc">Cotizar policarbonato <span aria-hidden="true">›</span></a>
+      </div>
+    </article>
+    <!-- mat-video-vertical: el video es vertical y se muestra cuadrado -->
+    <div class="mat-video mat-video-vertical">
+      <p>Del almacén al garaje terminado: el policarbonato cubre sin oscurecer. Su estructura de dos caras con cámaras de aire, en la versión alveolar, mantiene el espacio claro y protegido. Se usa en garajes, pérgolas, corredores, tragaluces y cubiertas de piscina, donde la luz es parte del diseño. Porcentaje de luz y espesores: pendientes de la ficha técnica.</p>
+      <!-- muted loop playsinline: sin sonido, en bucle y dentro de la página en iPhone -->
+      <figure><video src="/video/policarbonato.mp4" muted loop playsinline preload="auto" data-cargar></video></figure>
+    </div>
+  </div>
+
+  <!-- 3.2 POLIPROPILENO (tarjeta durazno) -->
+  <div class="mat" id="mat-pp" style="--c: #f4c9b2">
+    <article class="mat-tarjeta">
+      <figure class="mat-imagen">
+        <img class="mat-foto" src="/img/material/pp.webp" alt="Lámina ondulada translúcida de polipropileno sostenida a mano" data-cargar>
+      </figure>
+      <div class="mat-texto">
+        <h2>Polipropileno</h2>
+        <ul class="mat-rasgos">
+          <li><b>Económica</b><span>Cubre más techo con menos inversión.</span></li>
+          <li><b>Resistente</b><span>Aguanta el sol y la lluvia de cada día.</span></li>
+          <li><b>Flexible</b><span>Se dobla sin quebrarse y vuelve a su forma.</span></li>
+        </ul>
+        <div class="mat-usos"><b>Usos</b><ul><li>Bodegas y galpones</li><li>Remodelación y cambio de techo</li></ul></div>
+        <a href="#cotizar" class="mat-enlace" data-material="pp">Cotizar polipropileno <span aria-hidden="true">›</span></a>
+      </div>
+    </article>
+    <!-- Este video es horizontal: no lleva mat-video-vertical -->
+    <div class="mat-video">
+      <p>La lámina de polipropileno se dobla con la mano y recupera su forma sin marcas ni grietas. Es liviana, se corta con herramientas comunes y se manipula sin equipo pesado, por eso conviene en viviendas, ampliaciones y cubiertas donde se busca rendimiento sin cargar la estructura. Medidas, colores y garantía: pendientes de la ficha técnica.</p>
+      <figure><video src="/video/polipropileno.mp4" muted loop playsinline preload="auto" data-cargar></video></figure>
+    </div>
+  </div>
+
+  <!-- 3.3 PVC (tarjeta verde) con 5 fotos para elegir.
+       Cada botón de .mat-miniaturas guarda en data-src la foto grande que
+       muestra al tocarlo (main.js "MATERIALES"). class="activo" marca la
+       miniatura elegida; la primera foto también está en el src de .mat-foto. -->
+  <div class="mat" id="mat-pvc" style="--c: #cfe6d3">
+    <article class="mat-tarjeta">
+      <figure class="mat-imagen">
+        <img class="mat-foto" src="/img/material/pvc5.webp" alt="Láminas onduladas de PVC en varios colores" data-cargar>
+        <div class="mat-miniaturas"><button type="button" class="activo" data-src="img/material/pvc5.webp" aria-label="Ver imagen 1"><img src="/img/material/pvc5.webp" alt="" loading="lazy"></button><button type="button" class="" data-src="img/material/pvc1.webp" aria-label="Ver imagen 2"><img src="/img/material/pvc1.webp" alt="" loading="lazy"></button><button type="button" class="" data-src="img/material/pvc2.webp" aria-label="Ver imagen 3"><img src="/img/material/pvc2.webp" alt="" loading="lazy"></button><button type="button" class="" data-src="img/material/pvc3.webp" aria-label="Ver imagen 4"><img src="/img/material/pvc3.webp" alt="" loading="lazy"></button><button type="button" class="" data-src="img/material/pvc4.webp" aria-label="Ver imagen 5"><img src="/img/material/pvc4.webp" alt="" loading="lazy"></button></div>
+      </figure>
+      <div class="mat-texto">
+        <h2>PVC</h2>
+        <ul class="mat-rasgos">
+          <li><b>No se oxida</b><span>Soporta la humedad sin corroerse.</span></li>
+          <li><b>Perfil colonial</b><span>Aspecto de teja con traslape entre láminas.</span></li>
+          <li><b>Colores</b><span>Terracota, rojo, verde, azul y gris.</span></li>
+        </ul>
+        <div class="mat-usos"><b>Usos</b><ul><li>Vivienda</li><li>Remodelación y cambio de techo</li></ul></div>
+        <a href="#cotizar" class="mat-enlace" data-material="pvc">Cotizar PVC <span aria-hidden="true">›</span></a>
+      </div>
+    </article>
+    <div class="mat-video mat-video-vertical">
+      <p>Así se instala una cubierta de PVC: las láminas se asientan sobre la estructura, se traslapan y se fijan, y el techo queda con el acabado de una teja colonial. Es una opción para casas, locales y bodegas, sobre todo donde hay mucha humedad. Aislamiento, colores disponibles y garantía: pendientes de la ficha técnica.</p>
+      <figure><video src="/video/pvc.mp4" muted loop playsinline preload="auto" data-cargar></video></figure>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     4. POR QUÉ CAMBIAR DE TECHO (#ventajas)
+     El párrafo .encendido: main.js (sección 2) lo parte en palabras y las
+     "enciende" una por una al bajar.
+     data-calientes="pvc,|pp|policarbonato" → palabras que se pintan en
+     naranja (separadas por | ). Para resaltar otra, agregarla a la lista.
+     CSS: sección 7 (.encendido, .caliente).
+     ========================================================================= -->
+<section id="ventajas" class="bloque bloque-oscuro">
+  <p class="antetitulo">Por qué cambiar de techo</p>
+  <p class="encendido" data-calientes="pvc,|pp|policarbonato">El aspecto de la teja de siempre, en una lámina liviana de PVC, PP o policarbonato que no se rompe con el granizo, no se oxida y aísla del calor y de la lluvia.</p>
+</section>
+
+<!-- =========================================================================
+     5. CITA (#propuesta)
+     Mismo efecto de palabras que se encienden; centrada y en cursiva por la
+     clase .cita (CSS sección 7). <blockquote> es la etiqueta para citas.
+     ========================================================================= -->
+<section id="propuesta" class="bloque cita">
+  <p class="antetitulo">Por qué empezar por el material</p>
+  <blockquote>
+    <p class="encendido">«Un techo no se cambia cada año. Por eso cada obra merece el material que le corresponde: el que aguanta su clima, deja pasar la luz que necesita y se instala sin sorpresas.»</p>
+  </blockquote>
+</section>
+
+<!-- =========================================================================
+     6. COMPARADOR (tabla)
+     <table> = tabla; <thead> = encabezado; <tbody> = cuerpo;
+     <tr> = fila; <th> = celda de título; <td> = celda de dato.
+     colspan="3" → la celda ocupa 3 columnas (filas pendientes).
+     Los colores de cada columna salen de .col-pc, .col-pp y .col-pvc
+     (CSS sección 8). Los sellos "Sí/No deja pasar" son .sello.si / .sello.no.
+     ========================================================================= -->
+<section id="comparador" class="bloque">
+  <p class="antetitulo">Comparador</p>
+  <h2 class="titulo-grande">Tres materiales, tres respuestas</h2>
+  <!-- La envoltura es la tarjeta blanca; en celular la tabla se desliza dentro -->
+  <div class="tabla-envoltura">
+  <table class="comparativa">
+    <thead><tr>
+      <th><span class="oculto">Característica</span></th>
+      <th class="col-pc"><span>Policarbonato</span></th>
+      <th class="col-pp"><span>Polipropileno</span></th>
+      <th class="col-pvc"><span>PVC</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><th>Mejor para</th><td>Garajes, pérgolas y patios</td><td>Viviendas y ampliaciones</td><td>Bodegas, locales y casas</td></tr>
+      <tr><th>Luz natural</th><td><span class="sello si">Sí deja pasar</span></td><td><span class="sello no">No deja pasar</span></td><td><span class="sello no">No deja pasar</span></td></tr>
+      <tr><th>Aspecto</th><td>Lámina translúcida</td><td>Teja con relieve</td><td>Teja o lámina con perfil</td></tr>
+      <tr><th>Elegir si…</th><td>Se necesita claridad</td><td>Se busca apariencia de teja</td><td>Hay mucha humedad</td></tr>
+      <!-- Filas sin dato todavía (class="pendiente" las pinta en ocre) -->
+      <tr class="pendiente"><th>Peso por m²</th><td colspan="3">Pendiente de la ficha técnica</td></tr>
+      <tr class="pendiente"><th>Garantía</th><td colspan="3">Pendiente de la ficha técnica</td></tr>
+      <tr class="pendiente"><th>Precio orientativo</th><td colspan="3">Pendiente del catálogo</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- =========================================================================
+     7. CLIMA DE LA SIERRA
+     Cabecera (título + párrafo), 4 tarjetas numeradas (<ol> = lista numerada)
+     y las zonas de entrega como etiquetas.
+     PARA AGREGAR UNA ZONA: agregar <li>Nombre</li> dentro de .zonas ul.
+     CSS: sección 9.
+     ========================================================================= -->
+<section id="clima" class="bloque clima">
+  <div class="clima-cabecera">
+    <div>
+      <p class="antetitulo">Quito y los valles</p>
+      <h2 class="titulo-grande">Pensada para el clima de la sierra</h2>
+    </div>
+    <p>En Quito un mismo día trae sol fuerte, aguacero y granizo. El techo tiene que aguantar las tres cosas.</p>
+  </div>
+  <ol class="clima-rejilla">
+    <li><span class="clima-num">01</span><h3>Granizo de la tarde</h3><p>La lámina flexiona y vuelve a su forma. No quedan tejas rotas ni goteras después de la tormenta.</p></li>
+    <li><span class="clima-num">02</span><h3>Sol de altura</h3><p>A 2.800 metros la radiación es intensa. La capa con protección UV mantiene el color sin decolorarse.</p></li>
+    <li><span class="clima-num">03</span><h3>Aguaceros fuertes</h3><p>Una sola lámina del alero a la cumbrera deja menos uniones por donde entre el agua, y el golpe de la lluvia casi no se oye.</p></li>
+    <li><span class="clima-num">04</span><h3>Noches frías</h3><p>El material conserva mejor la temperatura que la teja metálica, que se enfría y se calienta en minutos.</p></li>
+  </ol>
+  <div class="zonas">
+    <p class="antetitulo">Entrega en obra</p>
+    <ul><li>Quito norte</li><li>Quito centro</li><li>Quito sur</li><li>Cumbayá y Tumbaco</li><li>Valle de Los Chillos</li><li>Calderón y Carapungo</li><li>Pomasqui y San Antonio</li><li>Sangolquí</li></ul>
+  </div>
+</section>
+
+<!-- =========================================================================
+     8. OBRAS
+     En computadora la sección se queda fija y la fila .pista se desliza a la
+     izquierda al bajar (main.js "OBRAS"). En celular las tarjetas van una
+     debajo de otra.
+     PARA AGREGAR UNA OBRA: copiar un <article class="tarjeta"> completo y
+     cambiar la foto (src), el texto alternativo (alt), el título y el detalle.
+     loading="lazy" → la foto se descarga recién al acercarse a ella.
+     CSS: sección 10.
+     ========================================================================= -->
+<section id="obras">
+  <div class="obras-fijo">
+    <div class="obras-titulo">
+      <p class="antetitulo">Obras hechas</p>
+      <h2 class="titulo-grande">Techos que ya están arriba</h2>
+    </div>
+    <div class="pista">
+      <article class="tarjeta">
+        <img src="/img/obras/piscina-pc.webp" alt="Cubierta de piscina: Policarbonato alveolar" loading="lazy">
+        <h3>Cubierta de piscina</h3>
+        <p>Policarbonato alveolar · <span class="pendiente">ubicación pendiente</span></p>
+      </article>
+      <article class="tarjeta">
+        <img src="/img/obras/patio-pp.webp" alt="Patio cubierto: Polipropileno" loading="lazy">
+        <h3>Patio cubierto</h3>
+        <p>Polipropileno · <span class="pendiente">ubicación pendiente</span></p>
+      </article>
+      <article class="tarjeta">
+        <img src="/img/obras/techo-pvc.webp" alt="Techo de teja roja: PVC" loading="lazy">
+        <h3>Techo de teja roja</h3>
+        <p>PVC · <span class="pendiente">ubicación pendiente</span></p>
+      </article>
+      <article class="tarjeta">
+        <img src="/img/obras/cumbrera-pvc.webp" alt="Cumbrera y faldones: PVC" loading="lazy">
+        <h3>Cumbrera y faldones</h3>
+        <p>PVC · <span class="pendiente">ubicación pendiente</span></p>
+      </article>
+      <article class="tarjeta">
+        <img src="/img/obras/pergola-pc.webp" alt="Pérgola: Policarbonato" loading="lazy">
+        <h3>Pérgola</h3>
+        <p>Policarbonato · <span class="pendiente">ubicación pendiente</span></p>
+      </article>
+      <article class="tarjeta">
+        <img src="/img/obras/corredor-pc.webp" alt="Corredor techado: Policarbonato ondulado" loading="lazy">
+        <h3>Corredor techado</h3>
+        <p>Policarbonato ondulado · <span class="pendiente">ubicación pendiente</span></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================
+     9. COTIZAR
+     Dos formularios lado a lado (en celular, uno sobre otro):
+       a) #calculo: la calculadora. Cada campo tiene un id (material, largo,
+          ancho, lamina) que main.js lee para calcular; el resultado se
+          escribe dentro de <output id="resultado">.
+          value="8" → valor que aparece al abrir la página.
+       b) #contacto: nombre, teléfono y ciudad. Los dos botones son type="submit";
+          su value ("wa" o "correo") le dice a main.js por dónde enviar.
+          required → el navegador no deja enviar si ese campo está vacío.
+     El número y el correo de .datos-venta los escribe main.js (data-wa-texto
+     y data-correo-texto) desde las constantes WHATSAPP y CORREO.
+     CSS: sección 11. JS: main.js sección 5.
+     ========================================================================= -->
+<section id="cotizar" class="bloque bloque-claro">
+  <p class="antetitulo">Cotizar</p>
+  <h2 class="titulo-grande">¿Cuánto techo hay que cubrir?</h2>
+  <p class="cotizar-intro">Ingresar el material, las medidas del techo y el largo de lámina. El cálculo suma 5 % de traslapes y cortes; después, ventas confirma precio y entrega.</p>
+  <div class="cotizar-rejilla">
+    <!-- a) Calculadora -->
+    <form id="calculo">
+      <label>Material
+        <!-- value="pp" es la clave que usa main.js; el texto es lo que se ve -->
+        <select id="material">
+          <option value="pp">Polipropileno</option>
+          <option value="pc">Policarbonato</option>
+          <option value="pvc">PVC</option>
+        </select>
+      </label>
+      <label>Largo del techo (m)<input id="largo" type="number" min="0" step="0.1" value="8" inputmode="decimal"></label>
+      <label>Ancho del techo (m)<input id="ancho" type="number" min="0" step="0.1" value="6" inputmode="decimal"></label>
+      <label>Largo de lámina (m)<input id="lamina" type="number" min="0" step="0.1" value="6" inputmode="decimal"></label>
+      <output id="resultado" for="largo ancho lamina material"></output>
+    </form>
+    <!-- b) Formulario de contacto -->
+    <form id="contacto">
+      <label>Nombre<input name="nombre" required autocomplete="name"></label>
+      <label>Teléfono<input name="telefono" type="tel" required autocomplete="tel"></label>
+      <label>Ciudad<input name="ciudad" autocomplete="address-level2"></label>
+      <div class="envio">
+        <button class="boton boton-wa" type="submit" value="wa">Enviar por WhatsApp</button>
+        <button class="boton boton-borde" type="submit" value="correo">Enviar por correo</button>
+      </div>
+      <!-- Mensaje de confirmación: oculto (hidden) hasta que se envía -->
+      <p id="contactoAviso" class="aviso" role="status" hidden></p>
+      <dl class="datos-venta">
+        <div><dt>WhatsApp</dt><dd data-wa-texto></dd></div>
+        <div><dt>Correo</dt><dd data-correo-texto></dd></div>
+        <div><dt>Planta y despacho</dt><dd class="pendiente">Dirección pendiente</dd></div>
+      </dl>
+      <p class="ficha pendiente">Número y correo de prueba: falta reemplazarlos por los reales.</p>
+    </form>
+  </div>
+</section>
+
+<!-- =========================================================================
+     10. PREGUNTAS
+     Fondo: <canvas id="tejasCampo">, donde tejasHover.js dibuja tejas en 3D
+     que se levantan al pasar el mouse.
+     Cada pregunta es un <details>: <summary> es la pregunta que se toca y el
+     <p> es la respuesta que se despliega.
+     PARA AGREGAR UNA PREGUNTA: copiar una línea <details>...</details>.
+     Tamaño de letra de preguntas y respuestas: CSS sección 12 (summary y
+     .faq-panel details p).
+     ========================================================================= -->
+<section id="preguntas" class="preguntas">
+  <canvas id="tejasCampo" aria-hidden="true"></canvas>
+  <div class="faq-panel">
+    <p class="antetitulo">Preguntas</p>
+    <div class="faq" id="faq">
+    <details><summary>¿Qué material conviene para una casa?</summary><p>Polipropileno o PVC con perfil de teja, según el clima y la apariencia buscada. Para dejar pasar la luz, el policarbonato: polipropileno y PVC son opacos.</p></details>
+    <details><summary>¿Qué largo pueden tener las láminas?</summary><p class="pendiente">Largos disponibles: pendientes de la ficha técnica.</p></details>
+    <details><summary>¿Cuántas láminas lleva un techo?</summary><p>Depende del área, la pendiente y el traslape. La sección Cotizar da el área de partida.</p></details>
+    <details><summary>¿Se venden las cumbreras y los accesorios?</summary><p>Sí, para cerrar el techo completo. <span class="pendiente">Colores y medidas: pendientes del catálogo.</span></p></details>
+    <details><summary>¿Dónde se compra?</summary><p>El cotizador de esta página arma el pedido y lo envía por WhatsApp o por correo; ventas confirma precio y entrega. <span class="pendiente">Dirección de la planta: pendiente.</span></p></details>
+    <details><summary>¿Incluye instalación y envío?</summary><p class="pendiente">Condiciones pendientes.</p></details>
+    <details><summary>¿Qué garantía tienen?</summary><p class="pendiente">Pendiente de la ficha técnica.</p></details>
+  </div>
+  </div>
+</section>
+
+</main>
+
+<!-- =========================================================================
+     PIE
+     La palabra TRUVEC va rellena con una foto de tejas (CSS sección 12,
+     .palabra-gigante); main.js sección 6 la desliza al bajar.
+     Para cambiar la palabra, cambiar el texto de #gigante.
+     ========================================================================= -->
+<footer>
+  <p class="palabra-gigante" id="gigante" aria-hidden="true">TRUVEC</p>
+  <p class="pie pendiente">Dirección, horarios y redes sociales: pendientes.</p>
+</footer>
+
+<!-- Carga el JavaScript del sitio. type="module" permite usar import. -->
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

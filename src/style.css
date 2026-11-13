@@ -1,0 +1,948 @@
+/* =============================================================================
+   ESTILOS DEL SITIO DE TEJAS (TRUVEC)
+   -----------------------------------------------------------------------------
+   Este archivo da forma y color a todo lo que está en index.html.
+
+   Cómo leer una regla:
+     .boton { color: #fff; }
+     └─┬──┘   └────┬────┘
+   selector     declaración: propiedad + valor
+   - Un selector que empieza con "."  apunta a class="..."  del HTML.
+   - Un selector que empieza con "#"  apunta a id="..."     del HTML.
+   - Un selector sin símbolo (h1, table, form) apunta a la etiqueta.
+   - "a b" (con espacio) = el elemento b que está DENTRO de a.
+
+   Orden del archivo (el mismo orden de la página):
+     1. Variables de color y medidas      7. Bloques (ventajas y cita)
+     2. Base general                      8. Comparador (tabla)
+     3. Pantalla de carga                 9. Clima de la sierra
+     4. Barra superior, menú y WhatsApp  10. Obras
+     5. Escenas de video con scroll      11. Cotizar
+     6. Materiales                       12. Preguntas y pie
+                                         13. Pantallas medianas y celular
+                                         14. Movimiento reducido
+
+   Unidades que se repiten:
+   - px  = píxeles fijos.
+   - vw / vh = % del ancho / alto de la ventana (10vw = 10 % del ancho).
+   - svh = como vh, pero en celular descuenta la barra del navegador.
+   - em  = relativo al tamaño de letra del propio elemento.
+   - clamp(MÍN, IDEAL, MÁX) = el valor IDEAL, pero nunca menos que MÍN ni más
+     que MÁX. Así la letra crece con la pantalla sin pasarse.
+   ============================================================================= */
+
+
+/* =============================================================================
+   1. VARIABLES
+   Se definen una vez aquí y se usan en todo el archivo con var(--nombre).
+   Cambiar un color aquí lo cambia en todas partes donde se usa.
+   ============================================================================= */
+:root {
+  --fondo: #faf7f2;      /* crema: fondo general de la página */
+  --oscuro: #f1ebe2;     /* crema más oscuro: fondo de "Ventajas" y "Preguntas" (el nombre quedó del tema oscuro anterior) */
+  --texto: #111111;      /* casi negro: texto normal */
+  --suave: #4a4a4a;      /* gris: textos secundarios */
+  --acento: #c8461f;     /* naranja teja: botones, antetítulos, palabras resaltadas */
+  --claro: #ffffff;      /* blanco: fondo de la sección Cotizar */
+  --tinta: #111111;      /* texto dentro de formularios y botones con borde */
+  --borde: rgba(0, 0, 0, .14);  /* líneas finas de separación (negro al 14 %) */
+  --pendiente: #946200;  /* ocre: marca los datos que faltan ("pendiente") */
+  --gutter: clamp(16px, 5vw, 72px); /* margen izquierdo y derecho de todo el sitio */
+}
+
+
+/* =============================================================================
+   2. BASE GENERAL (afecta a toda la página)
+   ============================================================================= */
+
+/* El ancho de una caja incluye su relleno y su borde (más fácil de calcular). */
+* { box-sizing: border-box; }
+
+/* scroll-behavior: smooth -> al tocar un enlace del menú la página baja suave. */
+html {
+  background: var(--fondo);
+  -webkit-text-size-adjust: 100%;   /* evita que el iPhone agrande la letra solo */
+  scroll-behavior: smooth;
+}
+
+/* Al saltar a una sección desde el menú, deja 64 px libres arriba para que la
+   barra fija no tape el título. */
+section { scroll-margin-top: 64px; }
+
+/* Oculta un texto a la vista pero lo deja para lectores de pantalla
+   (ej.: la palabra "Menú" del botón de tres rayas). */
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Mientras carga (main.js pone la clase "cargando" en <html>) no se puede bajar. */
+html.cargando, html.cargando body { overflow: hidden; }
+
+/* Letra base de todo el sitio: 17 px, interlineado 1.5, familia Helvetica/Arial.
+   overflow-x: clip -> nada puede generar desplazamiento horizontal. */
+body {
+  margin: 0;
+  color: var(--texto);
+  font: 400 17px/1.5 "Helvetica Neue", Arial, sans-serif;
+  overflow-x: clip;
+}
+
+/* Títulos: gruesos (800), letras un poco juntas y sin margen. */
+h1, h2 {
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.05;
+  margin: 0;
+}
+h1 { font-size: clamp(48px, 9vw, 132px); }  /* "Un techo para cada obra" de la portada */
+
+/* Imágenes y videos nunca más anchos que su contenedor. */
+img, video, canvas { display: block; max-width: 100%; }
+
+/* Los enlaces toman el color del texto que los rodea (no el azul por defecto). */
+a { color: inherit; }
+
+
+/* =============================================================================
+   3. PANTALLA DE CARGA
+   HTML: <div id="carga"> al inicio del <body>.
+   JS:   main.js, sección 0, mueve el porcentaje y la barra, y la oculta al final.
+   ============================================================================= */
+#carga {
+  position: fixed;     /* fija sobre toda la ventana */
+  inset: 0;            /* top, right, bottom y left en 0: cubre todo */
+  z-index: 50;         /* z-index alto = queda encima de todo lo demás */
+  background: var(--fondo);
+  display: grid;
+  place-content: center;  /* centra el contenido vertical y horizontal */
+  justify-items: center;
+  gap: 10px;
+}
+/* La palabra "Truvec" sobre el porcentaje. */
+.carga-marca {
+  margin: 0;
+  letter-spacing: .32em;
+  text-transform: uppercase;   /* la muestra en MAYÚSCULAS */
+  font-size: 14px;
+  color: var(--suave);
+}
+/* El número grande "0 %" ... "100 %".
+   tabular-nums: todos los dígitos del mismo ancho, así el número no "baila". */
+.carga-pct {
+  margin: 0;
+  font-size: clamp(56px, 12vw, 120px);
+  font-variant-numeric: tabular-nums;
+}
+/* Línea gris de fondo de la barra de carga. */
+.carga-linea { width: min(320px, 70vw); height: 2px; background: var(--borde); }
+/* Línea naranja que se llena: empieza en scaleX(0) (ancho cero) y main.js
+   la estira hasta scaleX(1). transform-origin: left -> crece desde la izquierda. */
+.carga-linea span {
+  display: block;
+  height: 100%;
+  background: var(--acento);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+
+/* =============================================================================
+   4. BARRA SUPERIOR, MENÚ, WHATSAPP Y BOTONES
+   HTML: <header class="barra"> y <a class="wa">.
+   JS:   main.js "Menú en celular" abre/cierra el menú;
+         main.js "La barra lleva logo claro..." pone la clase .sobre-oscuro.
+   ============================================================================= */
+
+/* La barra queda fija arriba. display: flex pone logo, menú y botón en fila;
+   justify-content: space-between los separa a los extremos. */
+.barra {
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px var(--gutter);
+}
+
+/* Marca "TRUVEC". El halo blanco (text-shadow) la hace legible sobre fotos. */
+.logo {
+  text-decoration: none;   /* quita el subrayado del enlace */
+  letter-spacing: .24em;   /* letras separadas */
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 800;
+  text-shadow: 0 1px 10px rgba(255,255,255,.8);
+}
+/* Mientras la barra está sobre los videos oscuros del inicio, el logo va claro.
+   La clase .sobre-oscuro la pone y la quita main.js según el scroll. */
+.sobre-oscuro .logo { color: #f3f0ea; text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+/* Tamaño final del logo (esta regla va después y gana sobre los 14 px de arriba).
+   clamp(mínimo, ideal, máximo): 19 px en pantallas chicas, hasta 24 px. */
+.logo { font-size: clamp(19px, 1.6vw, 24px); font-weight: 900; }
+/* "IFT" pequeño, abajo y en naranja, junto a TRUVEC (<sub> en el HTML). */
+.logo sub {
+  font-size: 12px;
+  letter-spacing: .12em;
+  margin-left: 4px;
+  color: var(--acento);
+  vertical-align: sub;
+}
+.sobre-oscuro .logo sub { color: #ffd9c9; }
+
+/* Menú de computadora: una "píldora" crema semitransparente con desenfoque
+   (backdrop-filter) para leerse igual sobre video oscuro o fondo claro.
+   margin-left: auto lo empuja hacia la derecha, junto al botón Cotizar. */
+.menu {
+  display: flex;
+  gap: 2px;
+  padding: 5px;
+  margin-left: auto;
+  border-radius: 999px;   /* 999px = bordes completamente redondos */
+  background: rgba(250, 247, 242, .82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 14px rgba(0,0,0,.08);
+}
+/* Cada enlace del menú (Materiales, Ventajas, ...). */
+.menu a {
+  text-decoration: none;
+  font-size: clamp(15px, 1.25vw, 18px);   /* 15 px a 18 px según el ancho */
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  color: var(--texto);
+}
+/* :hover = al pasar el mouse; :focus-visible = al llegar con el teclado. */
+.menu a:hover, .menu a:focus-visible { background: rgba(0,0,0,.07); }
+/* El botón de tres rayas sólo existe en celular (se muestra en la sección 13). */
+.menu-boton { display: none; }
+
+/* Botón verde de WhatsApp, fijo abajo a la derecha en todas las secciones.
+   env(safe-area-inset-bottom) lo sube en iPhones con barra inferior. */
+.wa {
+  position: fixed;
+  z-index: 30;
+  right: var(--gutter);
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1f8f5a;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 12px 18px 12px 14px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+}
+.wa svg { width: 24px; height: 24px; }   /* tamaño del ícono */
+.wa:hover { background: #22a066; }       /* verde un poco más claro al pasar el mouse */
+
+/* Línea naranja finita arriba de todo que crece a medida que se baja.
+   HTML: <div class="avance">. JS: main.js anima #avance de scaleX 0 a 1. */
+.avance { position: fixed; z-index: 21; top: 0; left: 0; right: 0; height: 2px; }
+.avance span {
+  display: block;
+  height: 100%;
+  background: var(--acento);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Botón naranja redondeado. Se usa en "Cotizar" y en los botones del formulario. */
+.boton {
+  display: inline-block;
+  background: var(--acento);
+  color: #fff;
+  text-decoration: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 13px 24px;
+  font: inherit;        /* usa la misma letra del sitio (los <button> traen otra) */
+  font-weight: 700;
+  cursor: pointer;      /* manito al pasar el mouse */
+}
+/* Variante más pequeña: el "Cotizar" de la barra. */
+.boton-chico { padding: 10px 22px; font-size: clamp(15px, 1.25vw, 18px); }
+
+
+/* =============================================================================
+   5. ESCENAS DE VIDEO CON SCROLL (portada y policarbonato)
+   HTML: <section class="escena" data-frames="..."> con un <canvas> dentro.
+   JS:   main.js sección 1 + secuencia.js dibujan los fotogramas en el canvas
+         según cuánto se baja. Estas escenas son oscuras (texto claro).
+   ============================================================================= */
+/* Cada escena ocupa exactamente una pantalla de alto. Se repite height para
+   navegadores viejos que no entienden svh (usan la primera línea). */
+.escena {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: #000;
+  color: #f3f0ea;
+}
+.escena .ficha { color: #a7a9a6; }               /* nota gris dentro de la escena */
+.escena .ficha.pendiente { color: #f0c674; }     /* nota "pendiente" en amarillo, visible sobre negro */
+.escena .panel li { border-top-color: rgba(255, 255, 255, .16); }
+/* El canvas cubre toda la escena: ahí se pinta el video cuadro por cuadro. */
+.escena > canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* "Velos": degradados negros semitransparentes encima del video para que el
+   texto blanco se lea. linear-gradient(dirección, color posición, ...). */
+.velo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.4), transparent 34%, transparent 55%, rgba(0,0,0,.72));
+}
+/* Velo lateral: oscuro a la izquierda, transparente a la derecha. */
+.velo-lado { background: linear-gradient(90deg, rgba(0,0,0,.78), rgba(0,0,0,.3) 48%, transparent 68%); }
+/* scaleX(-1) lo voltea como espejo: queda oscuro a la DERECHA (escena de policarbonato). */
+.velo-der { transform: scaleX(-1); }
+
+/* .cap = cada texto que aparece y desaparece sobre la portada.
+   En el HTML llevan data-tramo="inicio,fin" (ver main.js sección 1). */
+.cap {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  text-shadow: 0 2px 18px rgba(0,0,0,.55);
+}
+.cap p { margin: 8px 0 0; font-style: italic; font-weight: 600; }
+/* Centrado en la pantalla: top 50% + translate -50% (sube la mitad de su alto). */
+.cap-centro { top: 50%; translate: 0 -50%; text-align: center; }
+.cap-abajo { bottom: 9vh; max-width: 620px; }    /* textos pegados abajo */
+.cap-abajo h2 { font-size: clamp(38px, 6vw, 84px); }
+/* Subtítulo bajo cada material ("Para la casa: teja con relieve y color."). */
+.cap-abajo p { font-size: clamp(20px, 2vw, 30px); }
+.cap-der { left: auto; text-align: right; }      /* el de policarbonato va a la derecha */
+
+/* Antetítulo: la línea pequeña en MAYÚSCULAS naranja sobre cada título
+   (ej.: "MATERIALES", "COMPARADOR"). Se usa en casi todas las secciones. */
+.antetitulo {
+  color: var(--acento);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-size: 35px;
+  font-weight: 600;
+  margin: 0 0 14px;
+}
+.cap .antetitulo { color: #ffd9c9; }   /* sobre video, un naranja muy claro */
+/* "01 · Policarbonato" sobre el título del panel. */
+.numero {
+  color: #ffd9c9;
+  font-size: 25px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: .08em;
+  margin: 0 0 8px;
+}
+/* "Desplazar para recorrer". !important obliga a usar este margen. */
+.indicacion { font-size: 14px; font-style: italic; opacity: .85; margin-top: 22px !important; }
+/* Tamaño de los títulos grandes de sección (h2 con class="titulo-grande"). */
+.titulo-grande { font-size: clamp(38px, 6vw, 88px); }
+
+/* .panel = el recuadro de texto sobre la escena de policarbonato. */
+.panel {
+  position: absolute;
+  /* Arriba, justo debajo de la barra (antes iba centrado en la pantalla y,
+     en ventanas bajas, quedaba muy abajo). */
+  top: clamp(90px, 13vh, 150px);
+  left: var(--gutter);
+  width: min(440px, calc(100% - 2 * var(--gutter)));
+}
+.panel-der { left: auto; right: var(--gutter); }    /* panel a la derecha */
+.panel h2 { font-size: clamp(32px, 4vw, 54px); margin-bottom: 16px; }
+.panel ul { padding: 0; margin: 0 0 16px; list-style: none; }  /* lista sin viñetas */
+/* Cada línea de la lista. font-size: tamaño en computadora (en celular lo
+   cambia la sección 13). */
+.panel li { padding: 9px 0; border-top: 1px solid var(--borde); font-weight: 600; font-size: clamp(18px, 1.5vw, 23px); }
+/* .ficha = nota pequeña en cursiva (ej.: "Porcentaje de luz: pendiente"). */
+.ficha { font-size: 14px; font-style: italic; color: var(--suave); margin: 0 0 18px; }
+/* Todo dato que falta se pinta en ocre y cursiva para que se note. */
+.pendiente em, .ficha.pendiente, .pie.pendiente { font-style: italic; color: var(--pendiente); }
+/* También los textos pendientes dentro de otro párrafo (<span class="pendiente">,
+   ej.: "ubicación pendiente" en Obras) y el detalle de las tarjetas de Obras. */
+span.pendiente, .tarjeta p.pendiente { font-style: italic; color: var(--pendiente); }
+
+
+/* =============================================================================
+   6. MATERIALES (policarbonato, polipropileno, PVC)
+   HTML: <section id="materiales">, cada material es un <div class="mat">.
+         El color de cada tarjeta viene de style="--c: #......" en el HTML.
+   JS:   main.js "MATERIALES" anima la entrada y cambia la foto de PVC.
+   ============================================================================= */
+.materiales { background: var(--fondo); padding: clamp(80px, 13vh, 140px) 0 40px; }
+.materiales-cabecera { padding: 0 var(--gutter); margin-bottom: clamp(36px, 6vh, 64px); }
+.mat { position: relative; padding: 0 var(--gutter); }
+/* "A + B" = B justo después de A: separa cada material del anterior. */
+.mat + .mat { margin-top: clamp(60px, 10vh, 120px); }
+
+/* La tarjeta de color: grid de 2 columnas, foto (5 partes) y texto (7 partes). */
+.mat-tarjeta {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+  background: var(--c);     /* el color que se puso en el HTML con --c */
+  border-radius: 22px;
+  padding: clamp(22px, 3.4vw, 48px);
+  overflow: hidden;
+}
+/* ::after crea una capa extra sin tocar el HTML: un brillo blanco circular
+   arriba a la izquierda. pointer-events: none -> no bloquea clics. */
+.mat-tarjeta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 18% 30%, rgba(255,255,255,.45), transparent 55%);
+}
+/* z-index: 1 deja la foto y el texto por encima del brillo. */
+.mat-imagen { margin: 0; position: relative; z-index: 1; }
+/* Foto cuadrada (aspect-ratio: 1). object-fit: cover recorta sin deformar. */
+.mat-foto {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 24px 50px rgba(0,0,0,.18);
+  transition: opacity .25s;
+}
+/* Fila de miniaturas debajo de la foto de PVC. */
+.mat-miniaturas { display: flex; gap: 8px; margin-top: 12px; }
+.mat-miniaturas button {
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 54px;
+  height: 54px;
+  background: #fff;
+  cursor: pointer;
+  opacity: .65;          /* las no elegidas, un poco transparentes */
+}
+/* La miniatura elegida (main.js le pone la clase "activo"): borde negro y opaca. */
+.mat-miniaturas button.activo { border-color: #111; opacity: 1; }
+.mat-miniaturas img { width: 100%; height: 100%; object-fit: cover; }
+
+.mat-texto { position: relative; z-index: 1; }
+/* Nombre del material: "POLICARBONATO". */
+.mat-texto h2 {
+  font-size: clamp(40px, 5.6vw, 82px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -.01em;
+}
+/* Recuadro de las 3 características (TRANSLÚCIDO, LIVIANO, VERSÁTIL):
+   grid de 3 columnas iguales. */
+.mat-rasgos {
+  list-style: none;
+  padding: 0;
+  margin: clamp(20px, 3vh, 32px) 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1.5px solid rgba(0,0,0,.22);
+  border-radius: 14px;
+  background: rgba(255,255,255,.35);
+}
+.mat-rasgos li { padding: 16px 18px; }
+/* Línea vertical entre una característica y la siguiente. */
+.mat-rasgos li + li { border-left: 1.5px solid rgba(0,0,0,.22); }
+.mat-rasgos b {    /* la palabra en mayúsculas */
+  display: block;
+  font-size: clamp(19px, 1.7vw, 25px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  margin-bottom: 4px;
+}
+.mat-rasgos span { font-size: clamp(18px, 1.6vw, 23px); line-height: 1.35;; font-style: italic; color: #2b2b2b; }  /* la descripción */
+
+/* Fila "USOS" con etiquetas redondeadas (Patios y pérgolas, ...).
+   flex-wrap: wrap -> si no caben, pasan a la línea siguiente. */
+.mat-usos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 0 0 clamp(18px, 3vh, 28px);
+  justify-content: center;
+}
+.mat-usos b { font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+.mat-usos ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.mat-usos li {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.6);
+  border: 1.5px solid rgba(0,0,0,.18);
+}
+/* "Cotizar policarbonato ›" con línea debajo. */
+/* Botón "Cotizar policarbonato ›": píldora oscura; al pasar el mouse se vuelve
+   naranja y la flecha › se corre un poco a la derecha. */
+.mat-enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 30px;
+  font-size: clamp(17px, 1.3vw, 20px);
+  font-weight: 800;
+  text-decoration: none;
+  color: #fff;
+  background: #111;
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+  transition: background .2s, transform .2s;   /* cambio suave */
+}
+.mat-enlace span { font-size: 1.3em; line-height: 1; transition: transform .2s; }
+.mat-enlace:hover, .mat-enlace:focus-visible { background: var(--acento); transform: translateY(-2px); }
+.mat-enlace:hover span { transform: translateX(4px); }
+
+/* Debajo de la tarjeta: texto largo a la izquierda y video a la derecha
+   (grid de 2 columnas iguales). */
+.mat-video {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 80px);
+  align-items: center;
+  padding: clamp(40px, 7vh, 80px) 0 clamp(20px, 4vh, 40px);
+}
+/* Texto largo de cada material: mismo estilo de letra que las PREGUNTAS
+   (sección 12, summary). padding-left lo corre hacia el centro. */
+.mat-video p {
+  font-size: clamp(22px, 3vw, 36px);
+  font-weight: 800;
+  letter-spacing: -.01em;
+  line-height: 1.25;
+  margin: 0;
+  padding-left: clamp(0px, 6vw, 110px);
+  text-align: justify;   /* texto justificado: bordes parejos a los dos lados */
+  hyphens: auto;         /* corta palabras largas con guion para no dejar huecos */
+  color: #1a1a1a;
+}
+/* Polipropileno y PVC: el texto más a la derecha y con más aire antes del video. */
+#mat-pp .mat-video p, #mat-pvc .mat-video p { padding-left: clamp(0px, 9vw, 170px); padding-right: clamp(0px, 3vw, 60px); }
+.mat-video figure { margin: 0; justify-self: end; width: 100%; }
+/* Franja superior del video con el color del material (var(--c)). */
+.mat-video video { width: 100%; border-radius: 18px; border-top: 6px solid var(--c); }
+/* Videos grabados en vertical (policarbonato y PVC): se muestran cuadrados
+   (aspect-ratio 1/1) recortando arriba y abajo, sin deformar. */
+.mat-video-vertical figure { width: auto; }
+.mat-video-vertical video {
+  height: min(78vh, 720px);
+  width: auto;
+  aspect-ratio: 1 / 1;
+  max-width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+
+/* =============================================================================
+   7. BLOQUES DE TEXTO: "Por qué cambiar de techo" (#ventajas) y la cita (#propuesta)
+   HTML: <section class="bloque ...">.
+   JS:   main.js sección 2 parte el texto .encendido en palabras y las "enciende"
+         una por una al bajar; las de data-calientes reciben la clase .caliente.
+   ============================================================================= */
+.bloque { padding: clamp(80px, 13vh, 150px) var(--gutter); }   /* relleno estándar de sección */
+.bloque-oscuro { background: var(--oscuro); }                  /* fondo crema oscuro */
+.bloque-claro { background: var(--claro); color: var(--tinta); } /* fondo blanco (Cotizar) */
+/* El texto grande cuyas palabras se encienden al bajar.
+   max-width: 18em limita el largo de cada línea. */
+.encendido {
+  font-weight: 800;
+  font-size: clamp(30px, 4.6vw, 68px);
+  line-height: 1.14;
+  letter-spacing: -.02em;
+  margin: 0 0 20px;
+  max-width: 18em;
+}
+/* Palabras resaltadas en naranja: PVC, PP y policarbonato. */
+.encendido .caliente { color: var(--acento); }
+/* La cita "Un techo no se cambia cada año...": centrada, cursiva y extra gruesa. */
+.cita { text-align: center; }
+.cita blockquote { margin: 0 auto; max-width: 1180px; }   /* margin auto = centrado horizontal */
+.cita .encendido { margin: 0 auto; max-width: 21em; font-weight: 900; font-style: italic; letter-spacing: -.01em; }
+
+
+/* =============================================================================
+   8. COMPARADOR (tabla de los 3 materiales)
+   HTML: <section id="comparador">, <table class="comparativa">.
+   ============================================================================= */
+/* Tarjeta blanca que envuelve la tabla. overflow-x: auto -> en celular la
+   tabla se desliza de lado dentro de la tarjeta, sin mover la página. */
+.tabla-envoltura { overflow-x: auto; margin-top: 44px; }
+.tabla-envoltura {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 18px 44px rgba(0,0,0,.07);
+  padding: clamp(10px, 1.6vw, 22px);
+}
+/* min-width: 640px -> la tabla nunca se aprieta a menos de 640 px.
+   border-collapse: separate permite esquinas redondeadas en las filas. */
+table { width: 100%; min-width: 640px; border-collapse: separate; border-spacing: 0; }
+/* th = celda de título; td = celda de dato. */
+th, td { text-align: left; padding: 18px 20px; vertical-align: middle; font-weight: 400; }
+/* Encabezado: cada nombre de material va en un recuadro de su color. */
+.comparativa thead th { padding: 6px; }
+.comparativa thead th span {
+  display: block;
+  padding: 18px 20px;
+  border-radius: 14px;
+  font-size: clamp(22px, 2.3vw, 32px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+/* Mismos colores de las tarjetas de Materiales (sección 6 / style="--c" del HTML). */
+.col-pc span { background: #c3e2e6; }    /* policarbonato: celeste */
+.col-pp span { background: #f4c9b2; }    /* polipropileno: durazno */
+.col-pvc span { background: #cfe6d3; }   /* PVC: verde claro */
+/* Primera columna ("Mejor para", "Luz natural"...). */
+.comparativa tbody th { font-weight: 800; width: 19%; font-size: clamp(19px, 1.8vw, 25px); }
+/* Datos de la tabla ("Garajes, pérgolas y patios"...). */
+.comparativa td { font-size: clamp(19px, 1.8vw, 25px); }
+/* :nth-child(odd) = filas impares (1, 3, 5...): fondo crema para alternar. */
+.comparativa tbody tr:nth-child(odd) th, .comparativa tbody tr:nth-child(odd) td { background: #f7f3ed; }
+/* Esquinas redondeadas al inicio y al final de cada fila. */
+.comparativa tbody tr th { border-radius: 12px 0 0 12px; }
+.comparativa tbody tr td:last-child { border-radius: 0 12px 12px 0; }
+/* Sellos "Sí deja pasar" / "No deja pasar". */
+.sello { display: inline-block; padding: 6px 14px; border-radius: 999px; font-size: 18px; font-weight: 700; }
+.sello.si { background: #fff2c4; color: #6b4b00; }   /* amarillo */
+.sello.si::before { content: "☀ "; }                 /* agrega el sol antes del texto */
+.sello.no { background: #ece7e0; color: #4a4a4a; }   /* gris */
+/* Filas de datos pendientes (peso, garantía, precio). */
+tr.pendiente td { color: var(--pendiente); font-style: italic; }
+
+
+/* =============================================================================
+   9. CLIMA DE LA SIERRA (Quito y los valles)
+   HTML: <section id="clima">.
+   ============================================================================= */
+/* Cabecera: título a la izquierda y párrafo a la derecha; con flex-wrap,
+   si no caben en una fila, el párrafo baja. */
+.clima { padding-bottom: clamp(30px, 5vh, 60px); }
+.clima-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 44px;
+}
+.clima-cabecera .titulo-grande { max-width: 11em; }
+/* "> p" = sólo el párrafo hijo directo. 34ch = unos 34 caracteres de ancho. */
+.clima-cabecera > p { max-width: 34ch; margin: 0; font-size: 22px; font-style: italic; color: var(--suave); }
+/* Las 4 tarjetas (Granizo, Sol, Aguaceros, Noches) en 4 columnas. */
+.clima-rejilla {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+/* Cada tarjeta: blanca, redondeada y con una franja naranja arriba. */
+.clima-rejilla li {
+  background: #fff;
+  border-radius: 18px;
+  padding: 26px 24px 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.06);
+  border-top: 4px solid var(--acento);
+}
+.clima-num { display: block; font-size: 15px; font-weight: 800; color: var(--acento); letter-spacing: .1em; margin-bottom: 18px; } /* "01", "02"... */
+.clima-rejilla h3 { margin: 0 0 12px; font-size: clamp(22px, 2vw, 30px); font-weight: 900; line-height: 1.1; }
+.clima-rejilla p { margin: 0; font-size: clamp(19px, 1.7vw, 24px); color: var(--suave); }
+/* "ENTREGA EN OBRA" y las etiquetas de barrios. */
+.zonas { margin-top: 48px; text-align: center; }
+.zonas ul { list-style: none; margin: 0 auto; padding: 0; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;  max-width: 900px;}
+.zonas li {
+  flex: 0 0 calc((100% - 2 * 20px) / 3);
+  font-size: 19px;
+  font-weight: 700;
+  padding: 11px 16px;
+  border: 1.5px solid rgba(0,0,0,.2);
+  border-radius: 999px;
+  background: #fff;
+}
+
+
+/* =============================================================================
+   10. OBRAS (fila de fotos que se recorre de lado)
+   HTML: <section id="obras"> > .obras-fijo > .pista > .tarjeta.
+   JS:   main.js "OBRAS" fija la sección y mueve .pista hacia la izquierda.
+   ============================================================================= */
+#obras { background: var(--fondo); padding-bottom: clamp(10px, 4vh, 10px); }
+/* La parte que se queda fija mientras pasan las fotos: ocupa una pantalla. */
+.obras-fijo {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;     /* título arriba, fotos abajo */
+  justify-content: flex-start;
+  gap: clamp(90px, 19vh, 150px);
+  padding: 40px 0 32px;
+  overflow: hidden;
+}
+.obras-titulo { padding: 0 var(--gutter); }
+.obras-titulo .antetitulo { margin-bottom: 4px; }
+/* La fila de tarjetas. width: max-content -> tan ancha como todas juntas
+   (más ancha que la pantalla), por eso se puede deslizar. */
+.pista { display: flex; gap: 2rem; padding: 0 var(--gutter); width: max-content; }
+/* Cada tarjeta de obra. flex: none -> no se encoge. */
+.tarjeta {
+  width: min(50vw, 560px);
+  background: #fff;
+  box-shadow: 0 14px 34px rgba(0,0,0,.08);
+  border-radius: 16px;
+  overflow: hidden;
+  flex: none;
+}
+.tarjeta img { width: 100%; aspect-ratio: 4 / 3; max-height: 56vh; object-fit: cover; }
+.tarjeta h3 { font-size: clamp(24px, 2vw, 30px); font-weight: 800; margin: 1rem 1.3rem .2rem; }
+.tarjeta p { font-size: clamp(17px, 1.4vw, 20px); font-style: italic; color: var(--suave); margin: 0 1.3rem 1.1rem; }
+/* Tarjeta sin foto todavía: recuadro con borde punteado (hoy no se usa). */
+.tarjeta-pendiente::before {
+  content: "";
+  display: block;
+  aspect-ratio: 4 / 3;
+  max-height: 56vh;
+  border: 2px dashed var(--borde);
+  border-radius: 16px 16px 0 0;
+}
+
+
+/* =============================================================================
+   11. COTIZAR (calculadora + formulario de contacto)
+   HTML: <section id="cotizar">, <form id="calculo"> y <form id="contacto">.
+   JS:   main.js sección 5 calcula el área y envía por WhatsApp o correo.
+   ============================================================================= */
+/* Dos columnas: calculadora a la izquierda, formulario a la derecha. */
+.cotizar-rejilla { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 80px); margin-top: 44px; }
+/* Todos los formularios: un campo debajo de otro con 16 px de separación. */
+form { display: grid; gap: 16px; align-content: start; }
+/* Cada <label> contiene el texto y su campo, uno sobre otro. */
+label { display: grid; gap: 6px; font-size: 21px; font-weight: 700; }
+/* Cajas de texto y listas desplegables. */
+input, select {
+  font: inherit;
+  font-size: 22px;   /* después de font: inherit, para que gane este tamaño */
+  padding: 13px 12px;
+  border: 1px solid rgba(0,0,0,.28);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--tinta);
+  width: 100%;
+}
+.cotizar-intro { max-width: 46ch; margin: 18px 0 0; font-size: 23px; font-style: italic; color: var(--suave); }
+/* La calculadora va dentro de un recuadro crema. */
+#calculo { background: var(--fondo); border-radius: 20px; padding: clamp(20px, 3vw, 32px); }
+/* <output> = resultado del cálculo (lo escribe main.js en #resultado). */
+output { display: grid; gap: 4px; padding-top: 8px; border-top: 1px solid var(--borde); }
+output strong { display: block; font-size: clamp(44px, 6vw, 68px); font-weight: 900; }  /* "48.0 m²" */
+output em { font-size: 21px; color: var(--suave); }   /* "50.4 m² con 5 % de traslapes" */
+/* Fila con los botones "Enviar por WhatsApp" y "Enviar por correo". */
+.envio { display: flex; flex-wrap: wrap; gap: 10px; }
+.envio .boton { font-size: 21px; }
+.boton-wa { background: #1f8f5a; }   /* el botón de WhatsApp en verde */
+/* Botón con fondo transparente y borde negro (inset = sombra hacia adentro). */
+.boton-borde { background: transparent; color: var(--tinta); box-shadow: inset 0 0 0 2px var(--tinta); }
+/* "Se abrió WhatsApp con el pedido listo para enviar." */
+.aviso { margin: 0; font-size: 19px; font-weight: 700; }
+/* Lista WhatsApp / Correo / Planta y despacho (dl = lista de definiciones:
+   dt es el título y dd el dato). */
+.datos-venta { margin: 6px 0 0; display: grid; gap: 10px; }
+.datos-venta div {
+  display: grid;
+  grid-template-columns: 9.5em 1fr;   /* título a la izquierda, dato a la derecha */
+  gap: 10px;
+  border-top: 1px solid var(--borde);
+  padding-top: 10px;
+  font-size: 21px;
+}
+.datos-venta dt { font-weight: 800; }
+.datos-venta dd { margin: 0; }
+.datos-venta dd.pendiente { color: var(--pendiente); font-style: italic; }
+/* Las líneas de cantidad y peso del resultado, y la nota de pendientes. */
+output span, .bloque-claro .ficha { color: var(--pendiente); font-size: 18px; font-style: italic; }
+.bloque-claro .ficha { margin: 0; }
+
+
+/* =============================================================================
+   12. PREGUNTAS Y PIE
+   HTML: <section id="preguntas"> con <canvas id="tejasCampo"> de fondo.
+   JS:   tejasHover.js dibuja las tejas 3D que se levantan bajo el cursor;
+         main.js sección 6 mueve la foto dentro de la palabra TRUVEC.
+   ============================================================================= */
+/* Ocupa al menos una pantalla; place-items: center centra el panel de preguntas. */
+.preguntas {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: clamp(80px, 12vh, 140px) var(--gutter);
+  overflow: hidden;
+  background: var(--oscuro);
+}
+/* El canvas 3D de tejas detrás de todo. */
+#tejasCampo { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Panel de preguntas encima del canvas (z-index: 1).
+   pointer-events: none deja pasar el mouse a las tejas; luego se reactiva
+   sólo en preguntas y respuestas (regla siguiente) para poder hacer clic.
+   El halo blanco (text-shadow) hace legible el texto sobre las tejas. */
+.faq-panel {
+  position: relative;
+  z-index: 1;
+  width: min(760px, 100%);
+  padding: clamp(22px, 4vw, 44px);
+  pointer-events: none;
+  text-shadow: 0 0 6px rgba(255,255,255,.95), 0 0 24px rgba(255,255,255,.9);
+}
+.faq-panel summary, .faq-panel p { pointer-events: auto; }
+.faq-panel details { border-top-color: rgba(0,0,0,.35); }
+/* RESPUESTAS: tamaño de letra (19 px en celular, hasta 30 px en computadora). */
+.faq-panel details p { color: #111; font-size: clamp(19px, 2.5vw, 30px); line-height: 1.3; }
+.faq-panel .antetitulo { color: #111; }
+.faq-panel details p.pendiente { color: var(--pendiente); }
+.faq { max-width: 860px; }
+/* <details> = pregunta desplegable; <summary> = la pregunta que se toca. */
+details { border-top: 1px solid var(--borde); padding: 20px 0; }
+/* PREGUNTAS: tamaño de letra (22 px en celular, hasta 36 px en computadora). */
+summary { cursor: pointer; font-size: clamp(22px, 3vw, 36px); font-weight: 800; letter-spacing: -.01em; }
+details p { margin: 12px 0 0; color: var(--suave); font-style: italic; font-weight: 500; }
+details p.pendiente { color: var(--pendiente); }
+
+/* Pie de página. */
+footer { background: var(--fondo); padding: 30px var(--gutter) 28px; overflow: hidden; }
+/* La palabra gigante TRUVEC rellena con una foto de tejas:
+   - color: transparent deja las letras vacías;
+   - background: la foto obra4.webp (posición inicial / tamaño 170 %);
+   - background-clip: text recorta la foto con la forma de las letras.
+   main.js mueve background-position al bajar, por eso la foto se desliza. */
+.palabra-gigante {
+  margin: 0;
+  font-size: 21vw;
+  line-height: .95;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  text-align: center;
+  color: transparent;
+  background: url('/img/obra4.webp') 0% 100% / 170% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.pie { font-size: 14px; margin: 14px 0 0; text-align: center; }  /* "Dirección, horarios..." */
+
+
+/* =============================================================================
+   13. PANTALLAS MEDIANAS Y CELULAR
+   @media (max-width: X) = estas reglas SÓLO se aplican si la ventana mide X
+   o menos. Van al final para ganar sobre las reglas de arriba.
+   ============================================================================= */
+
+/* Hasta 1100 px (tablet / laptop pequeña): Clima en 2 columnas. */
+@media (max-width: 1100px) {
+  .clima-rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Hasta 900 px: el menú se esconde y aparece el botón de tres rayas.
+   Al tocarlo, main.js pone la clase .abierta en la barra y el menú baja. */
+@media (max-width: 900px) {
+  .menu {
+    position: fixed;
+    top: 70px;   /* justo debajo de la barra */
+    left: var(--gutter);
+    right: var(--gutter);
+    flex-direction: column;   /* enlaces uno debajo de otro */
+    gap: 0;
+    padding: 8px;
+    border-radius: 18px;
+    background: rgba(250, 247, 242, .97);
+    display: none;            /* escondido hasta tocar el botón */
+  }
+  .menu a { padding: 14px 16px; font-size: 17px; }
+  .barra.abierta .menu { display: flex; }     /* abierto */
+  /* Botón redondo de tres rayas. */
+  .menu-boton {
+    display: grid;
+    gap: 5px;
+    place-content: center;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(250, 247, 242, .9);
+    cursor: pointer;
+  }
+  /* Cada raya: un <span> de 18 x 2 px. */
+  .menu-boton span:not(.oculto) { display: block; width: 18px; height: 2px; background: #111; }
+  .barra .boton-chico { margin-left: auto; }   /* Cotizar se va a la derecha */
+}
+
+/* Hasta 767 px: celular. */
+@media (max-width: 767px) {
+  .clima-rejilla { grid-template-columns: 1fr; }        /* Clima en 1 columna */
+  /* Tabla del comparador más compacta. */
+  th, td { padding: 14px 12px; }
+  .comparativa thead th span { padding: 14px 12px; font-size: 16px; }
+  .comparativa tbody th { width: 7.5em; }
+  /* WhatsApp: sólo el ícono redondo (el texto queda oculto). */
+  .wa span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .wa { padding: 14px; }
+  .wa svg { width: 28px; height: 28px; }
+  .datos-venta div { grid-template-columns: 1fr; gap: 2px; }   /* título y dato uno sobre otro */
+  /* Escenas: el velo oscuro pasa abajo y el panel de texto se pega al fondo. */
+  .velo-lado, .velo-der {  background: linear-gradient(180deg, transparent 22%, rgba(0,0,0,.86) 68%); transform: none; }
+  .panel, .panel-der { font-size: 25px; top: auto; bottom: 26px; translate: none; left: var(--gutter); right: var(--gutter); width: auto; }
+  .panel h2 { font-size: 30px; margin-bottom: 8px; }
+  .panel li { padding: 5px 0; font-size: 25px; }
+  .ficha { margin-bottom: 12px; font-size: 13px; }
+  .cap-der { left: var(--gutter); text-align: left; }
+  /* Materiales: foto arriba y texto abajo; características una debajo de otra. */
+  .mat-tarjeta { grid-template-columns: 1fr; }
+  .mat-texto h2 { font-size: min(40px, 9.4vw); }
+  .mat-rasgos { grid-template-columns: 1fr; }
+  .mat-rasgos li + li { border-left: 0; border-top: 1.5px solid rgba(0,0,0,.22); }
+  .mat-video { grid-template-columns: 1fr; padding-top: 36px; }
+  .mat-video p, #mat-pp .mat-video p, #mat-pvc .mat-video p { padding-left: 0; padding-right: 0; }   /* en celular, el texto sin correrse */
+  .mat-video figure { justify-self: center; }
+  .mat-video-vertical figure { width: 100%; }
+  .mat-video-vertical video { width: 100%; height: auto; }
+  .cotizar-rejilla { grid-template-columns: 1fr; }     /* calculadora sobre formulario */
+  /* Obras: las tarjetas van una debajo de otra (no se deslizan de lado). */
+  .pista { flex-direction: column; width: auto; }
+  .tarjeta { width: 100%; }
+  .obras-fijo { overflow: visible; }
+   .zonas li { flex-basis: 100%; }   /* en celular, una etiqueta por línea */
+}
+
+
+/* =============================================================================
+   14. MOVIMIENTO REDUCIDO
+   Si la persona activó "reducir movimiento" en su sistema, se quitan las
+   animaciones (main.js tampoco las crea: variable "quieto").
+   ============================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .pista { flex-wrap: wrap; width: auto; }
+  * { transition: none !important; }
+  .escena { height: 100svh; }
+  [data-tramo] { position: absolute; }
+  .cap:not(:first-of-type) { display: none; }
+}
