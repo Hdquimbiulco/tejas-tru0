@@ -11,10 +11,9 @@
 //   2. PALABRAS QUE SE ENCIENDEN  → "Por qué cambiar de techo" y la cita
 //   3. VIDEOS NORMALES            → los videos de Materiales
 //   4. MATERIALES                 → miniaturas de PVC y entrada de tarjetas
-//   4b. OBRAS                     → fila de fotos que se desliza
 //   5. COTIZAR                    → WhatsApp, correo y calculadora
 //   5b. MENÚ EN CELULAR
-//   6. PREGUNTAS Y PIE
+//   6. PIE                        → TRUVEC de tejas 3D
 //   7. LOGO CLARO SOBRE VIDEO
 //   8. FIN DE LA CARGA
 //
@@ -35,7 +34,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { cargarFotogramas, crearSecuencia } from './secuencia.js';  // fotogramas en canvas
-import { crearCampo } from './tejasHover.js';                       // tejas 3D de Preguntas
+import { crearPalabra } from './palabraTejas.js';                    // TRUVEC de tejas 3D del pie
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -211,32 +210,6 @@ if (!quieto) {
 }
 
 // ---------------------------------------------------------------------------
-// 4b. OBRAS — en computadora la fila se recorre hacia la derecha con la sección fijada
-// HTML: .obras-fijo (se fija) y .pista (se mueve). CSS: sección 10.
-// Sólo para pantallas de 768 px o más (en celular las fotos van en columna).
-// ---------------------------------------------------------------------------
-if (!quieto) {
-  gsap.matchMedia().add('(min-width: 768px)', () => {
-    const pista = $('.pista');
-    // Cuánto hay que mover la fila: su ancho total menos el ancho de la ventana.
-    const distancia = () => pista.scrollWidth - innerWidth;
-    gsap.to(pista, {
-      x: () => -distancia(),       // la mueve hacia la izquierda
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.obras-fijo',
-        start: 'top top',
-        end: () => `+=${distancia()}`,   // tanto scroll como píxeles hay que mover
-        pin: true,
-        scrub: 0.6,
-        invalidateOnRefresh: true,       // recalcula si cambia el tamaño de la ventana
-        refreshPriority: 0,
-      },
-    });
-  });
-}
-
-// ---------------------------------------------------------------------------
 // 5. COTIZAR
 // HTML: #calculo (calculadora), #contacto (formulario), [data-wa], .datos-venta.
 // ---------------------------------------------------------------------------
@@ -330,18 +303,11 @@ $$('.menu a').forEach((a) => a.addEventListener('click', () => {
 }));
 
 // ---------------------------------------------------------------------------
-// 6. PREGUNTAS Y PIE — tejas que se levantan bajo el cursor y palabra rellena de teja
+// 6. PIE — palabra TRUVEC hecha de tejas 3D que se levantan bajo el cursor
 // ---------------------------------------------------------------------------
-// Dibuja las tejas 3D en el canvas de Preguntas (código en tejasHover.js).
-if (!quieto) crearCampo($('#tejasCampo'), $('#preguntas'));
-// Mueve la foto dentro de la palabra TRUVEC del pie (de abajo-izquierda a
-// arriba-derecha) mientras el pie entra en pantalla.
-if (!quieto) {
-  gsap.fromTo('#gigante', { backgroundPosition: '0% 100%' }, {
-    backgroundPosition: '100% 0%', ease: 'none',
-    scrollTrigger: { trigger: 'footer', start: 'top bottom', end: 'bottom bottom', scrub: true },
-  });
-}
+// Código en palabraTejas.js. Se dibuja también con "reducir movimiento": las
+// tejas sólo se mueven cuando la persona pasa el mouse.
+crearPalabra($('#palabraTejas'));
 
 
 // ---------------------------------------------------------------------------

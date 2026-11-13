@@ -22,9 +22,8 @@
     5. Cita                                #propuesta
     6. Comparador (tabla)                  #comparador
     7. Clima de la sierra                  #clima
-    8. Obras                               #obras
-    9. Cotizar                             #cotizar
-   10. Preguntas                           #preguntas
+    8. Cotizar                             #cotizar
+    9. Preguntas                           #preguntas
     -  Pie con la palabra TRUVEC
 
   Las imágenes y videos están en la carpeta public/. En el HTML se escriben
@@ -39,6 +38,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Truvec · Tejas de polipropileno, policarbonato y PVC</title>
   <meta name="description" content="Tejas y láminas de polipropileno, policarbonato y PVC para casas, garajes y bodegas.">
+  <!-- Letra con serifas para los textos de los videos de Materiales (Crimson Pro, de Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;1,400&display=swap">
   <!-- Enlace a la hoja de estilos -->
   <link rel="stylesheet" href="/src/style.css">
 </head>
@@ -72,7 +75,6 @@
     <a href="#materiales">Materiales</a>
     <a href="#ventajas">Ventajas</a>
     <a href="#comparador">Comparador</a>
-    <a href="#obras">Obras</a>
     <a href="#preguntas">Preguntas</a>
   </nav>
   <a href="#cotizar" class="boton boton-chico">Cotizar</a>
@@ -110,18 +112,17 @@
   <!-- Velo: degradado oscuro encima del video para que se lea el texto -->
   <div class="velo"></div>
   <div class="cap cap-centro" data-tramo="0,0.24">
-    <p class="antetitulo">Polipropileno · Policarbonato · PVC</p>
-    <h1>Un techo<br>para cada casa</h1>
+    <h1>Un techo<br>para cada hogar</h1>
     <p class="indicacion">Desplazar para recorrer</p>
   </div>
   <div class="cap cap-abajo" data-tramo="0.28,0.52">
-    <h2>Polipropileno</h2><p>Para la casa: teja con relieve y color.</p>
+    <h2>PVC</h2><p>Para la casa: teja con relieve y color.</p>
   </div>
   <div class="cap cap-abajo cap-der" data-tramo="0.56,0.76">
     <h2>Policarbonato</h2><p>Para el garaje y la pérgola: cubre y deja pasar la luz.</p>
   </div>
   <div class="cap cap-abajo" data-tramo="0.8,1">
-    <h2>PVC</h2><p>Para la bodega y el taller: lámina resistente al agua.</p>
+    <h2>Polipropileno</h2><p>Para la bodega y el taller: lámina resistente al agua.</p>
   </div>
 </section>
 
@@ -187,9 +188,9 @@
         <a href="#cotizar" class="mat-enlace" data-material="pc">Cotizar policarbonato <span aria-hidden="true">›</span></a>
       </div>
     </article>
-    <!-- mat-video-vertical: el video es vertical y se muestra cuadrado -->
-    <div class="mat-video mat-video-vertical">
-      <p>Del almacén al garaje terminado: el policarbonato cubre sin oscurecer. Su estructura de dos caras con cámaras de aire, en la versión alveolar, mantiene el espacio claro y protegido. Se usa en garajes, pérgolas, corredores, tragaluces y cubiertas de piscina, donde la luz es parte del diseño. Porcentaje de luz y espesores: pendientes de la ficha técnica.</p>
+    <!-- Texto + video. El tamaño y la forma del video se definen en CSS sección 6 (#mat-pc .mat-video video) -->
+    <div class="mat-video">
+      <p>Del almacén al garaje terminado: el policarbonato cubre sin oscurecer. Su estructura de dos caras con cámaras de aire, en la versión alveolar, mantiene el espacio claro y protegido. Se usa en garajes, pérgolas, corredores, tragaluces y cubiertas de piscina, donde la luz es parte del diseño.</p>
       <!-- muted loop playsinline: sin sonido, en bucle y dentro de la página en iPhone -->
       <figure><video src="/video/policarbonato.mp4" muted loop playsinline preload="auto" data-cargar></video></figure>
     </div>
@@ -212,9 +213,9 @@
         <a href="#cotizar" class="mat-enlace" data-material="pp">Cotizar polipropileno <span aria-hidden="true">›</span></a>
       </div>
     </article>
-    <!-- Este video es horizontal: no lleva mat-video-vertical -->
+    <!-- Video horizontal: en CSS se muestra en 4:3 (#mat-pp .mat-video video) -->
     <div class="mat-video">
-      <p>La lámina de polipropileno se dobla con la mano y recupera su forma sin marcas ni grietas. Es liviana, se corta con herramientas comunes y se manipula sin equipo pesado, por eso conviene en viviendas, ampliaciones y cubiertas donde se busca rendimiento sin cargar la estructura. Medidas, colores y garantía: pendientes de la ficha técnica.</p>
+      <p>La lámina de polipropileno se dobla con la mano y recupera su forma sin marcas ni grietas. Es liviana, se corta con herramientas comunes y se manipula sin equipo pesado, por eso conviene en viviendas, ampliaciones y cubiertas donde se busca rendimiento sin cargar la estructura.</p>
       <figure><video src="/video/polipropileno.mp4" muted loop playsinline preload="auto" data-cargar></video></figure>
     </div>
   </div>
@@ -240,8 +241,8 @@
         <a href="#cotizar" class="mat-enlace" data-material="pvc">Cotizar PVC <span aria-hidden="true">›</span></a>
       </div>
     </article>
-    <div class="mat-video mat-video-vertical">
-      <p>Así se instala una cubierta de PVC: las láminas se asientan sobre la estructura, se traslapan y se fijan, y el techo queda con el acabado de una teja colonial. Es una opción para casas, locales y bodegas, sobre todo donde hay mucha humedad. Aislamiento, colores disponibles y garantía: pendientes de la ficha técnica.</p>
+    <div class="mat-video">
+      <p>Así se instala una cubierta de PVC: las láminas se asientan sobre la estructura, se traslapan y se fijan, y el techo queda con el acabado de una teja colonial. Es una opción para casas, locales y bodegas, sobre todo donde hay mucha humedad.</p>
       <figure><video src="/video/pvc.mp4" muted loop playsinline preload="auto" data-cargar></video></figure>
     </div>
   </div>
@@ -295,8 +296,8 @@
     <tbody>
       <tr><th>Mejor para</th><td>Garajes, pérgolas y patios</td><td>Viviendas y ampliaciones</td><td>Bodegas, locales y casas</td></tr>
       <tr><th>Luz natural</th><td><span class="sello si">Sí deja pasar</span></td><td><span class="sello no">No deja pasar</span></td><td><span class="sello no">No deja pasar</span></td></tr>
-      <tr><th>Aspecto</th><td>Lámina translúcida</td><td>Teja con relieve</td><td>Teja o lámina con perfil</td></tr>
-      <tr><th>Elegir si…</th><td>Se necesita claridad</td><td>Se busca apariencia de teja</td><td>Hay mucha humedad</td></tr>
+      <tr><th>Aspecto</th><td>Lámina translúcida</td><td>Lámina delgada</td><td>Teja con relieve</td></tr>
+      <tr><th>Elegir si…</th><td>Se necesita claridad</td><td>Se busca sencillez</td><td>Hay mucha humedad</td></tr>
       <!-- Filas sin dato todavía (class="pendiente" las pinta en ocre) -->
       <tr class="pendiente"><th>Peso por m²</th><td colspan="3">Pendiente de la ficha técnica</td></tr>
       <tr class="pendiente"><th>Garantía</th><td colspan="3">Pendiente de la ficha técnica</td></tr>
@@ -334,58 +335,7 @@
 </section>
 
 <!-- =========================================================================
-     8. OBRAS
-     En computadora la sección se queda fija y la fila .pista se desliza a la
-     izquierda al bajar (main.js "OBRAS"). En celular las tarjetas van una
-     debajo de otra.
-     PARA AGREGAR UNA OBRA: copiar un <article class="tarjeta"> completo y
-     cambiar la foto (src), el texto alternativo (alt), el título y el detalle.
-     loading="lazy" → la foto se descarga recién al acercarse a ella.
-     CSS: sección 10.
-     ========================================================================= -->
-<section id="obras">
-  <div class="obras-fijo">
-    <div class="obras-titulo">
-      <p class="antetitulo">Obras hechas</p>
-      <h2 class="titulo-grande">Techos que ya están arriba</h2>
-    </div>
-    <div class="pista">
-      <article class="tarjeta">
-        <img src="/img/obras/piscina-pc.webp" alt="Cubierta de piscina: Policarbonato alveolar" loading="lazy">
-        <h3>Cubierta de piscina</h3>
-        <p>Policarbonato alveolar · <span class="pendiente">ubicación pendiente</span></p>
-      </article>
-      <article class="tarjeta">
-        <img src="/img/obras/patio-pp.webp" alt="Patio cubierto: Polipropileno" loading="lazy">
-        <h3>Patio cubierto</h3>
-        <p>Polipropileno · <span class="pendiente">ubicación pendiente</span></p>
-      </article>
-      <article class="tarjeta">
-        <img src="/img/obras/techo-pvc.webp" alt="Techo de teja roja: PVC" loading="lazy">
-        <h3>Techo de teja roja</h3>
-        <p>PVC · <span class="pendiente">ubicación pendiente</span></p>
-      </article>
-      <article class="tarjeta">
-        <img src="/img/obras/cumbrera-pvc.webp" alt="Cumbrera y faldones: PVC" loading="lazy">
-        <h3>Cumbrera y faldones</h3>
-        <p>PVC · <span class="pendiente">ubicación pendiente</span></p>
-      </article>
-      <article class="tarjeta">
-        <img src="/img/obras/pergola-pc.webp" alt="Pérgola: Policarbonato" loading="lazy">
-        <h3>Pérgola</h3>
-        <p>Policarbonato · <span class="pendiente">ubicación pendiente</span></p>
-      </article>
-      <article class="tarjeta">
-        <img src="/img/obras/corredor-pc.webp" alt="Corredor techado: Policarbonato ondulado" loading="lazy">
-        <h3>Corredor techado</h3>
-        <p>Policarbonato ondulado · <span class="pendiente">ubicación pendiente</span></p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- =========================================================================
-     9. COTIZAR
+     8. COTIZAR
      Dos formularios lado a lado (en celular, uno sobre otro):
        a) #calculo: la calculadora. Cada campo tiene un id (material, largo,
           ancho, lamina) que main.js lee para calcular; el resultado se
@@ -440,28 +390,31 @@
 </section>
 
 <!-- =========================================================================
-     10. PREGUNTAS
-     Fondo: <canvas id="tejasCampo">, donde tejasHover.js dibuja tejas en 3D
-     que se levantan al pasar el mouse.
+     9. PREGUNTAS
+     Dos columnas: a la izquierda el título fijo (sticky) con el enlace a
+     WhatsApp; a la derecha, las preguntas en tarjetas desplegables.
      Cada pregunta es un <details>: <summary> es la pregunta que se toca y el
-     <p> es la respuesta que se despliega.
-     PARA AGREGAR UNA PREGUNTA: copiar una línea <details>...</details>.
-     Tamaño de letra de preguntas y respuestas: CSS sección 12 (summary y
-     .faq-panel details p).
+     <p> es la respuesta que se despliega. Dentro del <summary>:
+       .faq-num   → el número (01, 02...)
+       .faq-q     → el texto de la pregunta
+       .faq-icono → el círculo con "+" que gira a "×" al abrir
+     PARA AGREGAR UNA PREGUNTA: copiar una línea <details>...</details> y
+     cambiar el número, la pregunta y la respuesta.
+     CSS: sección 12.
      ========================================================================= -->
 <section id="preguntas" class="preguntas">
-  <canvas id="tejasCampo" aria-hidden="true"></canvas>
-  <div class="faq-panel">
+  <div class="faq-intro">
     <p class="antetitulo">Preguntas</p>
-    <div class="faq" id="faq">
-    <details><summary>¿Qué material conviene para una casa?</summary><p>Polipropileno o PVC con perfil de teja, según el clima y la apariencia buscada. Para dejar pasar la luz, el policarbonato: polipropileno y PVC son opacos.</p></details>
-    <details><summary>¿Qué largo pueden tener las láminas?</summary><p class="pendiente">Largos disponibles: pendientes de la ficha técnica.</p></details>
-    <details><summary>¿Cuántas láminas lleva un techo?</summary><p>Depende del área, la pendiente y el traslape. La sección Cotizar da el área de partida.</p></details>
-    <details><summary>¿Se venden las cumbreras y los accesorios?</summary><p>Sí, para cerrar el techo completo. <span class="pendiente">Colores y medidas: pendientes del catálogo.</span></p></details>
-    <details><summary>¿Dónde se compra?</summary><p>El cotizador de esta página arma el pedido y lo envía por WhatsApp o por correo; ventas confirma precio y entrega. <span class="pendiente">Dirección de la planta: pendiente.</span></p></details>
-    <details><summary>¿Incluye instalación y envío?</summary><p class="pendiente">Condiciones pendientes.</p></details>
-    <details><summary>¿Qué garantía tienen?</summary><p class="pendiente">Pendiente de la ficha técnica.</p></details>
+    <p class="faq-nota">¿Otra duda? <a data-wa href="https://wa.me/" target="_blank" rel="noopener">Escribir por WhatsApp</a></p>
   </div>
+  <div class="faq" id="faq">
+    <details><summary><span class="faq-num">01</span><span class="faq-q">¿Qué material conviene para una casa?</span><span class="faq-icono" aria-hidden="true"></span></summary><p>Polipropileno o PVC con perfil de teja, según el clima y la apariencia buscada. Para dejar pasar la luz, el policarbonato: polipropileno y PVC son opacos.</p></details>
+    <details><summary><span class="faq-num">02</span><span class="faq-q">¿Qué largo pueden tener las láminas?</span><span class="faq-icono" aria-hidden="true"></span></summary><p class="pendiente">Largos disponibles: pendientes de la ficha técnica.</p></details>
+    <details><summary><span class="faq-num">03</span><span class="faq-q">¿Cuántas láminas lleva un techo?</span><span class="faq-icono" aria-hidden="true"></span></summary><p>Depende del área, la pendiente y el traslape. La sección Cotizar da el área de partida.</p></details>
+    <details><summary><span class="faq-num">04</span><span class="faq-q">¿Se venden las cumbreras y los accesorios?</span><span class="faq-icono" aria-hidden="true"></span></summary><p>Sí, para cerrar el techo completo. <span class="pendiente">Colores y medidas: pendientes del catálogo.</span></p></details>
+    <details><summary><span class="faq-num">05</span><span class="faq-q">¿Dónde se compra?</span><span class="faq-icono" aria-hidden="true"></span></summary><p>El cotizador de esta página arma el pedido y lo envía por WhatsApp o por correo; ventas confirma precio y entrega. <span class="pendiente">Dirección de la planta: pendiente.</span></p></details>
+    <details><summary><span class="faq-num">06</span><span class="faq-q">¿Incluye instalación y envío?</span><span class="faq-icono" aria-hidden="true"></span></summary><p class="pendiente">Condiciones pendientes.</p></details>
+    <details><summary><span class="faq-num">07</span><span class="faq-q">¿Qué garantía tienen?</span><span class="faq-icono" aria-hidden="true"></span></summary><p class="pendiente">Pendiente de la ficha técnica.</p></details>
   </div>
 </section>
 
@@ -469,12 +422,13 @@
 
 <!-- =========================================================================
      PIE
-     La palabra TRUVEC va rellena con una foto de tejas (CSS sección 12,
-     .palabra-gigante); main.js sección 6 la desliza al bajar.
-     Para cambiar la palabra, cambiar el texto de #gigante.
+     La palabra TRUVEC está hecha de tejas 3D que se levantan al pasar el
+     mouse: palabraTejas.js la dibuja en <canvas id="palabraTejas">
+     (CSS sección 12, .palabra-tejas). Para cambiar la palabra, cambiar la
+     constante PALABRA de palabraTejas.js.
      ========================================================================= -->
 <footer>
-  <p class="palabra-gigante" id="gigante" aria-hidden="true">TRUVEC</p>
+  <div class="palabra-tejas" role="img" aria-label="Truvec"><canvas id="palabraTejas"></canvas></div>
   <p class="pie pendiente">Dirección, horarios y redes sociales: pendientes.</p>
 </footer>
 

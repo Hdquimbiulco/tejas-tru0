@@ -16,7 +16,7 @@
      1. Variables de color y medidas      7. Bloques (ventajas y cita)
      2. Base general                      8. Comparador (tabla)
      3. Pantalla de carga                 9. Clima de la sierra
-     4. Barra superior, menú y WhatsApp  10. Obras
+     4. Barra superior, menú y WhatsApp  10. (Obras: se quitó)
      5. Escenas de video con scroll      11. Cotizar
      6. Materiales                       12. Preguntas y pie
                                          13. Pantallas medianas y celular
@@ -335,9 +335,14 @@ a { color: inherit; }
   text-transform: uppercase;
   font-size: 35px;
   font-weight: 600;
-  margin: 0 0 14px;
+  margin: 0 10 60px;
 }
 .cap .antetitulo { color: #ffd9c9; }   /* sobre video, un naranja muy claro */
+/* Antetítulos de sección un poco más grandes: Por qué cambiar de techo, Por
+   qué empezar por el material, Comparador, Quito y los valles, Cotizar y
+   Preguntas (35 px en pantallas chicas, hasta 44 px en las grandes). */
+#ventajas .antetitulo, #propuesta .antetitulo, #comparador .antetitulo,
+.clima-cabecera .antetitulo, #cotizar .antetitulo, .faq-intro .antetitulo { font-size: clamp(35px, 2.15vw, 44px); }
 /* "01 · Policarbonato" sobre el título del panel. */
 .numero {
   color: #ffd9c9;
@@ -372,8 +377,8 @@ a { color: inherit; }
 /* Todo dato que falta se pinta en ocre y cursiva para que se note. */
 .pendiente em, .ficha.pendiente, .pie.pendiente { font-style: italic; color: var(--pendiente); }
 /* También los textos pendientes dentro de otro párrafo (<span class="pendiente">,
-   ej.: "ubicación pendiente" en Obras) y el detalle de las tarjetas de Obras. */
-span.pendiente, .tarjeta p.pendiente { font-style: italic; color: var(--pendiente); }
+   ej.: "Dirección de la planta: pendiente" en Preguntas). */
+span.pendiente { font-style: italic; color: var(--pendiente); }
 
 
 /* =============================================================================
@@ -385,6 +390,10 @@ span.pendiente, .tarjeta p.pendiente { font-style: italic; color: var(--pendient
 .materiales { background: var(--fondo); padding: clamp(80px, 13vh, 140px) 0 40px; }
 .materiales-cabecera { padding: 0 var(--gutter); margin-bottom: clamp(36px, 6vh, 64px); }
 .mat { position: relative; padding: 0 var(--gutter); }
+/* Ancho de la tarjeta de color: 78 % del ancho de la ventana, centrada.
+   Se mide en vw (no en px) para que guarde la misma proporción en cualquier
+   pantalla o nivel de zoom. Para hacerla más ancha o más angosta, cambiar 78vw. */
+.mat-tarjeta { max-width: 78vw; margin-inline: auto; }
 /* "A + B" = B justo después de A: separa cada material del anterior. */
 .mat + .mat { margin-top: clamp(60px, 10vh, 120px); }
 
@@ -397,7 +406,7 @@ span.pendiente, .tarjeta p.pendiente { font-style: italic; color: var(--pendient
   align-items: center;
   background: var(--c);     /* el color que se puso en el HTML con --c */
   border-radius: 22px;
-  padding: clamp(22px, 3.4vw, 48px);
+  padding: clamp(20px, 2.4vw, 48px);
   overflow: hidden;
 }
 /* ::after crea una capa extra sin tocar el HTML: un brillo blanco circular
@@ -441,7 +450,7 @@ span.pendiente, .tarjeta p.pendiente { font-style: italic; color: var(--pendient
 .mat-texto { position: relative; z-index: 1; }
 /* Nombre del material: "POLICARBONATO". */
 .mat-texto h2 {
-  font-size: clamp(40px, 5.6vw, 82px);
+  font-size: clamp(34px, 3.9vw, 80px);
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: -.01em;
@@ -458,18 +467,18 @@ span.pendiente, .tarjeta p.pendiente { font-style: italic; color: var(--pendient
   border-radius: 14px;
   background: rgba(255,255,255,.35);
 }
-.mat-rasgos li { padding: 16px 18px; }
+.mat-rasgos li { padding: clamp(12px, 1vw, 20px) clamp(14px, 1.1vw, 22px); }
 /* Línea vertical entre una característica y la siguiente. */
 .mat-rasgos li + li { border-left: 1.5px solid rgba(0,0,0,.22); }
 .mat-rasgos b {    /* la palabra en mayúsculas */
   display: block;
-  font-size: clamp(19px, 1.7vw, 25px);
+  font-size: clamp(15px, 1.2vw, 24px);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: .03em;
   margin-bottom: 4px;
 }
-.mat-rasgos span { font-size: clamp(18px, 1.6vw, 23px); line-height: 1.35;; font-style: italic; color: #2b2b2b; }  /* la descripción */
+.mat-rasgos span { font-size: clamp(15px, 1.1vw, 22px); line-height: 1.35; font-style: italic; color: #2b2b2b; }  /* la descripción */
 
 /* Fila "USOS" con etiquetas redondeadas (Patios y pérgolas, ...).
    flex-wrap: wrap -> si no caben, pasan a la línea siguiente. */
@@ -481,12 +490,12 @@ span.pendiente, .tarjeta p.pendiente { font-style: italic; color: var(--pendient
   margin: 0 0 clamp(18px, 3vh, 28px);
   justify-content: center;
 }
-.mat-usos b { font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+.mat-usos b { font-size: clamp(15px, 1vw, 19px); font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
 .mat-usos ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .mat-usos li {
-  font-size: 18px;
+  font-size: clamp(15px, 1vw, 19px);
   font-weight: 700;
-  padding: 7px 14px;
+  padding: 6px 12px;
   border-radius: 999px;
   background: rgba(255,255,255,.6);
   border: 1.5px solid rgba(0,0,0,.18);
@@ -498,8 +507,8 @@ span.pendiente, .tarjeta p.pendiente { font-style: italic; color: var(--pendient
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 30px;
-  font-size: clamp(17px, 1.3vw, 20px);
+  padding: 14px 26px;
+  font-size: clamp(16px, 1.1vw, 21px);
   font-weight: 800;
   text-decoration: none;
   color: #fff;
@@ -512,44 +521,65 @@ span.pendiente, .tarjeta p.pendiente { font-style: italic; color: var(--pendient
 .mat-enlace:hover, .mat-enlace:focus-visible { background: var(--acento); transform: translateY(-2px); }
 .mat-enlace:hover span { transform: translateX(4px); }
 
-/* Debajo de la tarjeta: texto largo a la izquierda y video a la derecha
-   (grid de 2 columnas iguales). */
+/* Debajo de la tarjeta: texto a la izquierda y video a la derecha.
+   Las posiciones se miden como % del ancho de la ventana (vw), tomadas de los
+   bocetos con líneas rojas, y cada material define las suyas:
+     --izq   dónde empieza el texto (desde el borde izquierdo de la ventana)
+     --texto ancho de la columna de texto
+     --aire  espacio entre el texto y el video
+     --video ancho del video
+   margin-inline negativo: el bloque se sale del margen de .mat para que
+   --izq se mida desde el borde de la ventana. */
 .mat-video {
+  --izq: 21vw; --texto: 23vw; --aire: 8.5vw; --video: 28vw;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(28px, 5vw, 80px);
+  grid-template-columns: var(--texto) var(--video);
+  column-gap: var(--aire);
   align-items: center;
-  padding: clamp(40px, 7vh, 80px) 0 clamp(20px, 4vh, 40px);
+  margin-inline: calc(-1 * var(--gutter));
+  padding: clamp(48px, 8vh, 90px) 0 clamp(20px, 4vh, 40px) var(--izq);
 }
-/* Texto largo de cada material: mismo estilo de letra que las PREGUNTAS
-   (sección 12, summary). padding-left lo corre hacia el centro. */
+/* Policarbonato: video vertical (4:5). */
+#mat-pc .mat-video  { --izq: 21.4vw; --texto: 23.3vw; --aire: 8.5vw; --video: 28vw; }
+/* Polipropileno: texto más angosto y video horizontal más ancho (16:10). */
+#mat-pp .mat-video  { --izq: 20.8vw; --texto: 20vw; --aire: 8.4vw; --video: 37.5vw; }
+/* PVC: video vertical con su alto de antes (hasta 720 px); el ancho sale
+   del alto (ver más abajo), por eso la columna es "auto". */
+#mat-pvc .mat-video { --izq: 21.4vw; --texto: 23.3vw; --aire: 8.5vw; --video: auto; }
+/* Texto largo de cada material: letra con serifas (Crimson Pro), de peso
+   normal y con interlineado amplio, como un texto de libro. La letra crece
+   con la ventana (1.75vw) para guardar la proporción con la columna.
+   hyphens: manual → nunca corta
+   palabras con guion: si una palabra no cabe, pasa entera a la línea
+   siguiente. text-wrap: pretty reparte las palabras para no dejar una sola
+   en la última línea. */
 .mat-video p {
-  font-size: clamp(22px, 3vw, 36px);
-  font-weight: 800;
-  letter-spacing: -.01em;
-  line-height: 1.25;
+  font-family: "Crimson Pro", Georgia, "Times New Roman", serif;
+  font-size: clamp(22px, 1.75vw, 36px);
+  font-weight: 400;
+  letter-spacing: .005em;
+  line-height: 1.55;
   margin: 0;
-  padding-left: clamp(0px, 6vw, 110px);
-  text-align: justify;   /* texto justificado: bordes parejos a los dos lados */
-  hyphens: auto;         /* corta palabras largas con guion para no dejar huecos */
-  color: #1a1a1a;
+  text-align: left;
+  hyphens: manual;
+  text-wrap: pretty;
+  color: #2a2724;
 }
-/* Polipropileno y PVC: el texto más a la derecha y con más aire antes del video. */
-#mat-pp .mat-video p, #mat-pvc .mat-video p { padding-left: clamp(0px, 9vw, 170px); padding-right: clamp(0px, 3vw, 60px); }
-.mat-video figure { margin: 0; justify-self: end; width: 100%; }
-/* Franja superior del video con el color del material (var(--c)). */
-.mat-video video { width: 100%; border-radius: 18px; border-top: 6px solid var(--c); }
-/* Videos grabados en vertical (policarbonato y PVC): se muestran cuadrados
-   (aspect-ratio 1/1) recortando arriba y abajo, sin deformar. */
-.mat-video-vertical figure { width: auto; }
-.mat-video-vertical video {
-  height: min(78vh, 720px);
-  width: auto;
-  aspect-ratio: 1 / 1;
-  max-width: 100%;
+.mat-video figure { margin: 0; }
+/* Franja superior del video con el color del material (var(--c)).
+   object-fit: cover recorta el video para llenar la caja sin deformarlo. */
+.mat-video video {
+  display: block;
+  width: 100%;
+  border-radius: 18px;
+  border-top: 6px solid var(--c);
   object-fit: cover;
   object-position: center;
 }
+/* Forma de cada video (aspect-ratio = ancho / alto). */
+#mat-pc .mat-video video { aspect-ratio: 4 / 5; }
+#mat-pp .mat-video video { aspect-ratio: 16 / 10; }
+#mat-pvc .mat-video video { height: min(78vh, 720px); width: auto; aspect-ratio: 4 / 5; }
 
 
 /* =============================================================================
@@ -562,9 +592,11 @@ span.pendiente, .tarjeta p.pendiente { font-style: italic; color: var(--pendient
 .bloque-oscuro { background: var(--oscuro); }                  /* fondo crema oscuro */
 .bloque-claro { background: var(--claro); color: var(--tinta); } /* fondo blanco (Cotizar) */
 /* El texto grande cuyas palabras se encienden al bajar.
-   max-width: 18em limita el largo de cada línea. */
+   Peso 500 (medio) y un negro suavizado (#2b2724) para que no se vea tan
+   cargado. max-width: 18em limita el largo de cada línea. */
 .encendido {
-  font-weight: 800;
+  font-weight: 500;
+  color: #2b2724;
   font-size: clamp(30px, 4.6vw, 68px);
   line-height: 1.14;
   letter-spacing: -.02em;
@@ -573,10 +605,10 @@ span.pendiente, .tarjeta p.pendiente { font-style: italic; color: var(--pendient
 }
 /* Palabras resaltadas en naranja: PVC, PP y policarbonato. */
 .encendido .caliente { color: var(--acento); }
-/* La cita "Un techo no se cambia cada año...": centrada, cursiva y extra gruesa. */
+/* La cita "Un techo no se cambia cada año...": centrada y en cursiva, con el mismo peso liviano. */
 .cita { text-align: center; }
 .cita blockquote { margin: 0 auto; max-width: 1180px; }   /* margin auto = centrado horizontal */
-.cita .encendido { margin: 0 auto; max-width: 21em; font-weight: 900; font-style: italic; letter-spacing: -.01em; }
+.cita .encendido { margin: 0 auto; max-width: 21em; font-weight: 500; font-style: italic; letter-spacing: -.01em; }
 
 
 /* =============================================================================
@@ -645,7 +677,8 @@ tr.pendiente td { color: var(--pendiente); font-style: italic; }
   gap: 24px;
   margin-bottom: 44px;
 }
-.clima-cabecera .titulo-grande { max-width: 11em; }
+/* "Pensada para el clima de la sierra": mismo peso liviano que los bloques de la sección 7. */
+.clima-cabecera .titulo-grande { max-width: 11em; font-weight: 500; color: #2b2724; }
 /* "> p" = sólo el párrafo hijo directo. 34ch = unos 34 caracteres de ancho. */
 .clima-cabecera > p { max-width: 34ch; margin: 0; font-size: 22px; font-style: italic; color: var(--suave); }
 /* Las 4 tarjetas (Granizo, Sol, Aguaceros, Noches) en 4 columnas. */
@@ -679,51 +712,6 @@ tr.pendiente td { color: var(--pendiente); font-style: italic; }
   border: 1.5px solid rgba(0,0,0,.2);
   border-radius: 999px;
   background: #fff;
-}
-
-
-/* =============================================================================
-   10. OBRAS (fila de fotos que se recorre de lado)
-   HTML: <section id="obras"> > .obras-fijo > .pista > .tarjeta.
-   JS:   main.js "OBRAS" fija la sección y mueve .pista hacia la izquierda.
-   ============================================================================= */
-#obras { background: var(--fondo); padding-bottom: clamp(10px, 4vh, 10px); }
-/* La parte que se queda fija mientras pasan las fotos: ocupa una pantalla. */
-.obras-fijo {
-  min-height: 100vh;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;     /* título arriba, fotos abajo */
-  justify-content: flex-start;
-  gap: clamp(90px, 19vh, 150px);
-  padding: 40px 0 32px;
-  overflow: hidden;
-}
-.obras-titulo { padding: 0 var(--gutter); }
-.obras-titulo .antetitulo { margin-bottom: 4px; }
-/* La fila de tarjetas. width: max-content -> tan ancha como todas juntas
-   (más ancha que la pantalla), por eso se puede deslizar. */
-.pista { display: flex; gap: 2rem; padding: 0 var(--gutter); width: max-content; }
-/* Cada tarjeta de obra. flex: none -> no se encoge. */
-.tarjeta {
-  width: min(50vw, 560px);
-  background: #fff;
-  box-shadow: 0 14px 34px rgba(0,0,0,.08);
-  border-radius: 16px;
-  overflow: hidden;
-  flex: none;
-}
-.tarjeta img { width: 100%; aspect-ratio: 4 / 3; max-height: 56vh; object-fit: cover; }
-.tarjeta h3 { font-size: clamp(24px, 2vw, 30px); font-weight: 800; margin: 1rem 1.3rem .2rem; }
-.tarjeta p { font-size: clamp(17px, 1.4vw, 20px); font-style: italic; color: var(--suave); margin: 0 1.3rem 1.1rem; }
-/* Tarjeta sin foto todavía: recuadro con borde punteado (hoy no se usa). */
-.tarjeta-pendiente::before {
-  content: "";
-  display: block;
-  aspect-ratio: 4 / 3;
-  max-height: 56vh;
-  border: 2px dashed var(--borde);
-  border-radius: 16px 16px 0 0;
 }
 
 
@@ -785,68 +773,134 @@ output span, .bloque-claro .ficha { color: var(--pendiente); font-size: 18px; fo
 
 /* =============================================================================
    12. PREGUNTAS Y PIE
-   HTML: <section id="preguntas"> con <canvas id="tejasCampo"> de fondo.
-   JS:   tejasHover.js dibuja las tejas 3D que se levantan bajo el cursor;
-         main.js sección 6 mueve la foto dentro de la palabra TRUVEC.
+   HTML: <section id="preguntas"> > .faq-intro (título) + .faq (tarjetas).
+   JS:   palabraTejas.js arma la palabra TRUVEC del pie con tejas 3D.
    ============================================================================= */
-/* Ocupa al menos una pantalla; place-items: center centra el panel de preguntas. */
+/* Dos columnas: título a la izquierda (más angosta) y preguntas a la derecha.
+   max-width + margin-inline: auto centran el conjunto en pantallas anchas. */
 .preguntas {
   position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
   display: grid;
-  place-items: center;
-  padding: clamp(80px, 12vh, 140px) var(--gutter);
-  overflow: hidden;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 5vw, 88px);
+  align-items: start;
+  padding: clamp(90px, 14vh, 160px) var(--gutter);
   background: var(--oscuro);
+  overflow: hidden;
 }
-/* El canvas 3D de tejas detrás de todo. */
-#tejasCampo { position: absolute; inset: 0; width: 100%; height: 100%; }
-/* Panel de preguntas encima del canvas (z-index: 1).
-   pointer-events: none deja pasar el mouse a las tejas; luego se reactiva
-   sólo en preguntas y respuestas (regla siguiente) para poder hacer clic.
-   El halo blanco (text-shadow) hace legible el texto sobre las tejas. */
-.faq-panel {
-  position: relative;
-  z-index: 1;
-  width: min(760px, 100%);
-  padding: clamp(22px, 4vw, 44px);
+.preguntas > * { position: relative; z-index: 1; }   /* por encima del dibujo de fondo */
+/* Fondo: escamas de teja dibujadas con CSS (semicírculos repetidos, la
+   segunda capa corrida media teja como en un techo real). La máscara las
+   deja visibles en los bordes y las desvanece detrás de las preguntas. */
+.preguntas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   pointer-events: none;
-  text-shadow: 0 0 6px rgba(255,255,255,.95), 0 0 24px rgba(255,255,255,.9);
+  background-image:
+    radial-gradient(circle at 50% 100%, transparent 60%, rgba(200,70,31,.08) 61% 66%, transparent 67%),
+    radial-gradient(circle at 50% 100%, transparent 60%, rgba(200,70,31,.08) 61% 66%, transparent 67%);
+  background-size: 64px 32px;
+  background-position: 0 0, 32px 16px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 62% 50%, transparent 35%, #000 85%);
+          mask-image: radial-gradient(ellipse 70% 80% at 62% 50%, transparent 35%, #000 85%);
 }
-.faq-panel summary, .faq-panel p { pointer-events: auto; }
-.faq-panel details { border-top-color: rgba(0,0,0,.35); }
-/* RESPUESTAS: tamaño de letra (19 px en celular, hasta 30 px en computadora). */
-.faq-panel details p { color: #111; font-size: clamp(19px, 2.5vw, 30px); line-height: 1.3; }
-.faq-panel .antetitulo { color: #111; }
-.faq-panel details p.pendiente { color: var(--pendiente); }
-.faq { max-width: 860px; }
-/* <details> = pregunta desplegable; <summary> = la pregunta que se toca. */
-details { border-top: 1px solid var(--borde); padding: 20px 0; }
-/* PREGUNTAS: tamaño de letra (22 px en celular, hasta 36 px en computadora). */
-summary { cursor: pointer; font-size: clamp(22px, 3vw, 36px); font-weight: 800; letter-spacing: -.01em; }
-details p { margin: 12px 0 0; color: var(--suave); font-style: italic; font-weight: 500; }
-details p.pendiente { color: var(--pendiente); }
+/* Columna del título: sticky = se queda fija mientras se recorren las preguntas. */
+.faq-intro { position: sticky; top: 120px; max-width: 30rem; justify-self: end; }
+/* "Antes de cambiar el techo": peso medio y negro suavizado, como los bloques de la sección 7. */
+.faq-intro .titulo-grande { font-size: clamp(36px, 4.2vw, 62px); line-height: 1.02; margin: 0 0 22px; font-weight: 500; color: #2b2724; }
+.faq-nota { font-size: clamp(17px, 1.3vw, 20px); color: var(--suave); margin: 0; }
+.faq-nota a { color: var(--texto); font-weight: 800; text-decoration-color: var(--acento); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.faq-nota a:hover { color: var(--acento); }
+
+/* Lista de preguntas: tarjetas separadas por 12 px. */
+.faq { display: grid; gap: 12px; max-width: 720px; }
+/* Cada pregunta es una tarjeta crema clara con borde fino. Al pasar el mouse
+   sube 2 px; abierta (details[open]) se vuelve blanca con una franja naranja
+   a la izquierda y una sombra suave. */
+.faq details {
+  background: rgba(255, 252, 247, .78);
+  border: 1px solid rgba(0,0,0,.08);
+  border-left: 4px solid transparent;
+  border-radius: 18px;
+  padding: 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  transition: background .25s, border-color .25s, box-shadow .25s, transform .25s;
+  interpolate-size: allow-keywords;   /* permite animar la altura hasta "auto" */
+}
+.faq details:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(80,40,20,.08); }
+.faq details[open] {
+  background: #fff;
+  border-left-color: var(--acento);
+  box-shadow: 0 18px 40px rgba(80,40,20,.12);
+}
+/* La pregunta: número | texto | ícono, en una fila (grid de 3 columnas).
+   list-style: none y ::-webkit-details-marker quitan el triángulo del navegador. */
+.faq summary {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 22px 20px 20px;
+  cursor: pointer;
+  list-style: none;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary:focus-visible { outline: 2px solid var(--acento); outline-offset: 3px; border-radius: 16px; }
+.faq-num { font-size: 14px; font-weight: 800; letter-spacing: .12em; color: var(--acento); font-variant-numeric: tabular-nums; }
+/* PREGUNTAS: tamaño de letra (19 px en celular, hasta 24 px en computadora). */
+.faq-q { font-size: clamp(19px, 1.6vw, 24px); font-weight: 800; letter-spacing: -.01em; line-height: 1.25; }
+/* Ícono: círculo con un "+" hecho con dos rayas (::before y ::after).
+   Al abrir, gira 45° (queda como "×") y se rellena de naranja. */
+.faq-icono {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,.25);
+  transition: transform .35s cubic-bezier(.3,1.5,.5,1), background .25s, border-color .25s;
+}
+.faq-icono::before, .faq-icono::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 14px;
+  height: 2px;
+  margin: -1px 0 0 -7px;
+  background: #111;
+  border-radius: 2px;
+  transition: background .25s;
+}
+.faq-icono::after { transform: rotate(90deg); }
+.faq details:hover .faq-icono { border-color: var(--acento); }
+.faq details[open] .faq-icono { transform: rotate(135deg); background: var(--acento); border-color: var(--acento); }
+.faq details[open] .faq-icono::before, .faq details[open] .faq-icono::after { background: #fff; }
+/* RESPUESTAS: alineadas con el texto de la pregunta (padding-left = ancho
+   del número + espacio). */
+.faq details p {
+  margin: 0;
+  padding: 0 70px 22px 58px;
+  font-size: clamp(17px, 1.3vw, 20px);
+  line-height: 1.5;
+  color: #3a3a3a;
+}
+.faq details p.pendiente { color: var(--pendiente); font-style: italic; }
+/* Apertura suave: la altura de la respuesta crece de 0 a su tamaño. En
+   navegadores que no lo soportan, se abre sin animación. */
+.faq details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition: block-size .35s ease, content-visibility .35s allow-discrete;
+}
+.faq details[open]::details-content { block-size: auto; }
 
 /* Pie de página. */
 footer { background: var(--fondo); padding: 30px var(--gutter) 28px; overflow: hidden; }
-/* La palabra gigante TRUVEC rellena con una foto de tejas:
-   - color: transparent deja las letras vacías;
-   - background: la foto obra4.webp (posición inicial / tamaño 170 %);
-   - background-clip: text recorta la foto con la forma de las letras.
-   main.js mueve background-position al bajar, por eso la foto se desliza. */
-.palabra-gigante {
-  margin: 0;
-  font-size: 21vw;
-  line-height: .95;
-  font-weight: 800;
-  letter-spacing: -.03em;
-  text-align: center;
-  color: transparent;
-  background: url('/img/obra4.webp') 0% 100% / 170% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-}
+/* La palabra gigante TRUVEC hecha de tejas 3D (palabraTejas.js).
+   aspect-ratio 4.2 / 1 debe coincidir con PROPORCION de palabraTejas.js:
+   así la palabra no se deforma. cursor: crosshair invita a pasar el mouse. */
+.palabra-tejas { width: 100%; aspect-ratio: 4.2 / 1; cursor: crosshair; }
+.palabra-tejas canvas { display: block; width: 100%; height: 100%; }
 .pie { font-size: 14px; margin: 14px 0 0; text-align: center; }  /* "Dirección, horarios..." */
 
 
@@ -893,6 +947,10 @@ footer { background: var(--fondo); padding: 30px var(--gutter) 28px; overflow: h
   /* Cada raya: un <span> de 18 x 2 px. */
   .menu-boton span:not(.oculto) { display: block; width: 18px; height: 2px; background: #111; }
   .barra .boton-chico { margin-left: auto; }   /* Cotizar se va a la derecha */
+  /* Preguntas: el título arriba (sin quedarse fijo) y las preguntas debajo. */
+  .preguntas { grid-template-columns: 1fr; }
+  .faq-intro { position: static; justify-self: start; }
+  .faq { max-width: none; }
 }
 
 /* Hasta 767 px: celular. */
@@ -919,16 +977,14 @@ footer { background: var(--fondo); padding: 30px var(--gutter) 28px; overflow: h
   .mat-texto h2 { font-size: min(40px, 9.4vw); }
   .mat-rasgos { grid-template-columns: 1fr; }
   .mat-rasgos li + li { border-left: 0; border-top: 1.5px solid rgba(0,0,0,.22); }
-  .mat-video { grid-template-columns: 1fr; padding-top: 36px; }
-  .mat-video p, #mat-pp .mat-video p, #mat-pvc .mat-video p { padding-left: 0; padding-right: 0; }   /* en celular, el texto sin correrse */
-  .mat-video figure { justify-self: center; }
-  .mat-video-vertical figure { width: 100%; }
-  .mat-video-vertical video { width: 100%; height: auto; }
+  /* Preguntas: menos espacio a los lados dentro de cada tarjeta. */
+  .faq summary { gap: 12px; padding: 16px 14px; }
+  .faq details p { padding: 0 16px 18px 16px; }
+  /* Materiales: tarjeta a todo el ancho; texto arriba y video abajo, a todo el ancho. */
+  .mat-tarjeta { max-width: none; }
+  .mat-video, #mat-pc .mat-video, #mat-pp .mat-video, #mat-pvc .mat-video { grid-template-columns: 1fr; row-gap: 28px; margin-inline: 0; padding: 36px 0 20px; }
+  #mat-pvc .mat-video video { width: 100%; height: auto; }
   .cotizar-rejilla { grid-template-columns: 1fr; }     /* calculadora sobre formulario */
-  /* Obras: las tarjetas van una debajo de otra (no se deslizan de lado). */
-  .pista { flex-direction: column; width: auto; }
-  .tarjeta { width: 100%; }
-  .obras-fijo { overflow: visible; }
    .zonas li { flex-basis: 100%; }   /* en celular, una etiqueta por línea */
 }
 
@@ -940,7 +996,6 @@ footer { background: var(--fondo); padding: 30px var(--gutter) 28px; overflow: h
    ============================================================================= */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .pista { flex-wrap: wrap; width: auto; }
   * { transition: none !important; }
   .escena { height: 100svh; }
   [data-tramo] { position: absolute; }
