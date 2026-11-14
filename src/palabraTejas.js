@@ -180,7 +180,12 @@ export function crearPalabra(canvas) {
   }
 
   // Ajusta el dibujo al tamaño del canvas en pantalla (la proporción la fija el CSS).
+  // Si el tamaño no cambió (por ejemplo, la barra del navegador del celular
+  // apareció o se escondió), no hace nada.
+  let anchoPrevio = 0;
   function ajustarTamano() {
+    if (canvas.clientWidth === anchoPrevio) return;
+    anchoPrevio = canvas.clientWidth;
     renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
     renderer.render(scene, camera);
   }

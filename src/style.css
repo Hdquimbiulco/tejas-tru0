@@ -928,6 +928,8 @@ footer { background: var(--fondo); padding: 30px var(--gutter) 28px; overflow: h
     padding: 8px;
     border-radius: 18px;
     background: rgba(250, 247, 242, .97);
+    -webkit-backdrop-filter: none;   /* casi opaco: el desenfoque no se nota y cuesta */
+    backdrop-filter: none;
     display: none;            /* escondido hasta tocar el botón */
   }
   .menu a { padding: 14px 16px; font-size: 17px; }
@@ -955,6 +957,9 @@ footer { background: var(--fondo); padding: 30px var(--gutter) 28px; overflow: h
 
 /* Hasta 767 px: celular. */
 @media (max-width: 767px) {
+  /* Margen a los lados más amplio que en computadora, para que el contenido
+     no quede pegado a los bordes de la pantalla (27 px en un iPhone de 390 px). */
+  :root { --gutter: clamp(24px, 7vw, 40px); }
   .clima-rejilla { grid-template-columns: 1fr; }        /* Clima en 1 columna */
   /* Tabla del comparador más compacta. */
   th, td { padding: 14px 12px; }
@@ -973,8 +978,11 @@ footer { background: var(--fondo); padding: 30px var(--gutter) 28px; overflow: h
   .ficha { margin-bottom: 12px; font-size: 13px; }
   .cap-der { left: var(--gutter); text-align: left; }
   /* Materiales: foto arriba y texto abajo; características una debajo de otra. */
-  .mat-tarjeta { grid-template-columns: 1fr; }
-  .mat-texto h2 { font-size: min(40px, 9.4vw); }
+  /* minmax(0, 1fr): la columna no se estira más que la tarjeta aunque el
+     contenido sea ancho (si no, el texto se sale por la derecha). */
+  .mat-tarjeta { grid-template-columns: minmax(0, 1fr); }
+  /* El nombre del material (POLICARBONATO es la palabra más larga) cabe en una línea. */
+  .mat-texto h2 { font-size: min(40px, 7.6vw); }
   .mat-rasgos { grid-template-columns: 1fr; }
   .mat-rasgos li + li { border-left: 0; border-top: 1.5px solid rgba(0,0,0,.22); }
   /* Preguntas: menos espacio a los lados dentro de cada tarjeta. */

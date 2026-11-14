@@ -102,12 +102,13 @@
        data-frames="portada" → carpeta public/frames/portada/
        data-total="120"      → cuántos fotogramas hay
        data-pantallas="5"    → cuánto hay que bajar para recorrerlo (5 pantallas)
+       data-pantallas-movil="3" → lo mismo en celular, más corto para el dedo
      Cada texto .cap lleva data-tramo="inicio,fin": entre qué parte del
      recorrido aparece (0 = inicio, 1 = final). Ej.: "0.28,0.52" aparece
      pasado el 28 % y se va al 52 %.
      CSS: sección 5 (.escena, .velo, .cap).
      ========================================================================= -->
-<section id="portada" class="escena" data-frames="portada" data-total="120" data-pantallas="5">
+<section id="portada" class="escena" data-frames="portada" data-total="120" data-pantallas="5" data-pantallas-movil="3">
   <canvas></canvas>
   <!-- Velo: degradado oscuro encima del video para que se lea el texto -->
   <div class="velo"></div>
@@ -134,7 +135,7 @@
      El botón lleva data-material="pc": al tocarlo, main.js deja elegido
      "Policarbonato" en la calculadora de Cotizar.
      ========================================================================= -->
-<section id="policarbonato" class="escena" data-frames="pc" data-total="82" data-pantallas="3">
+<section id="policarbonato" class="escena" data-frames="pc" data-total="82" data-pantallas="3" data-pantallas-movil="2">
   <canvas></canvas>
   <div class="velo velo-lado velo-der"></div>
   <article class="panel panel-der" data-tramo="0.08,1">

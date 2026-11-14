@@ -121,9 +121,11 @@ escenas.forEach((escena, i) => {
     scrollTrigger: {
       trigger: escena,
       start: 'top top',                                   // cuando la escena toca el borde superior
-      end: `+=${escena.dataset.pantallas * 100}%`,        // dura data-pantallas pantallas de scroll
+      // dura data-pantallas pantallas de scroll (data-pantallas-movil en celular)
+      end: `+=${(celular ? escena.dataset.pantallasMovil : escena.dataset.pantallas) * 100}%`,
       pin: true,                                          // la escena queda fija mientras tanto
-      scrub: 0.35,                                        // sigue al scroll con 0.35 s de suavizado
+      // computadora: sigue al scroll con 0.35 s de suavizado; celular: sigue al dedo sin retraso
+      scrub: celular ? true : 0.35,
       onToggle: ({ isActive }) => { if (!isActive) secuencia.liberar(); },  // libera memoria al salir
     },
   });
