@@ -955,16 +955,66 @@ footer { background: var(--fondo); padding: 30px var(--gutter) 28px; overflow: h
   .faq { max-width: none; }
 }
 
+/* Hasta 900 px (tablet y celular): Comparador apilado. Con menos ancho, las
+   cuatro columnas no caben y la tabla tenía que deslizarse de lado. */
+@media (max-width: 900px) {
+  /* La tabla deja de ser tabla y se apila, sin deslizar de lado.
+     Cada fila ("Mejor para", "Luz natural"...) pasa a ser un bloque: el título
+     arriba y debajo una línea por material, con su nombre en un recuadro de su
+     color. Los nombres salen del CSS (td::before), en el mismo orden que las
+     columnas del HTML: 1.ª Policarbonato, 2.ª Polipropileno, 3.ª PVC. */
+  .tabla-envoltura { overflow: visible; padding: 8px; margin-top: 32px; }
+  .comparativa, .comparativa tbody, .comparativa tr, .comparativa th, .comparativa td { display: block; }
+  .comparativa { min-width: 0; }
+  /* El encabezado se oculta a la vista (los nombres ya van en cada línea). */
+  .comparativa thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .comparativa tbody tr { padding: 14px 12px; border-radius: 14px; }
+  .comparativa tbody tr:nth-child(odd) { background: #f7f3ed; }
+  .comparativa tbody tr:nth-child(odd) th, .comparativa tbody tr:nth-child(odd) td { background: none; }
+  .comparativa tbody tr th, .comparativa tbody tr td:last-child { border-radius: 0; }
+  .comparativa tbody th {
+    width: auto;
+    padding: 0 0 10px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--suave);
+  }
+  /* Cada dato: nombre del material a la izquierda y el dato a la derecha. */
+  .comparativa td {
+    display: grid;
+    grid-template-columns: 7.2em minmax(0, 1fr);
+    column-gap: 10px;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 17px;
+  }
+  .comparativa td::before {
+    justify-self: start;
+    padding: 5px 8px;
+    border-radius: 8px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: #111;
+  }
+  .comparativa td:nth-of-type(1)::before { content: "Policarbonato"; background: #c3e2e6; }
+  .comparativa td:nth-of-type(2)::before { content: "Polipropileno"; background: #f4c9b2; }
+  .comparativa td:nth-of-type(3)::before { content: "PVC"; background: #cfe6d3; }
+  /* Filas pendientes: un solo dato para los tres, sin nombre de material. */
+  .comparativa tr.pendiente td { display: block; }
+  .comparativa tr.pendiente td::before { content: none; }
+  /* justify-self: start → el sello no se estira a todo el ancho de su columna. */
+  .sello { justify-self: start; font-size: 14px; padding: 5px 11px; white-space: nowrap; }
+}
+
 /* Hasta 767 px: celular. */
 @media (max-width: 767px) {
   /* Margen a los lados más amplio que en computadora, para que el contenido
      no quede pegado a los bordes de la pantalla (27 px en un iPhone de 390 px). */
   :root { --gutter: clamp(24px, 7vw, 40px); }
   .clima-rejilla { grid-template-columns: 1fr; }        /* Clima en 1 columna */
-  /* Tabla del comparador más compacta. */
-  th, td { padding: 14px 12px; }
-  .comparativa thead th span { padding: 14px 12px; font-size: 16px; }
-  .comparativa tbody th { width: 7.5em; }
   /* WhatsApp: sólo el ícono redondo (el texto queda oculto). */
   .wa span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .wa { padding: 14px; }
