@@ -16,10 +16,6 @@
 // Fotogramas decodificados hacia cada lado del actual. En celular (menos de
 // 768 px) son pocos: cada uno ocupa unos 3,7 MB de memoria ya descomprimido.
 const VENTANA = innerWidth < 768 ? 6 : 24;
-// En celular se usan los fotogramas de public/frames-movil/: el recorte
-// central de 720 x 720 (lo único que se ve en una pantalla vertical), sólo los
-// impares (main.js usa PASO 2). Pesan menos y ocupan menos memoria.
-const CARPETA = innerWidth < 768 ? 'frames-movil' : 'frames';
 const SIMULTANEOS = 6; // cuántos fotogramas se preparan a la vez como máximo
 
 /** Descarga los fotogramas; `alCargar` avisa cada uno terminado. */
@@ -29,8 +25,8 @@ const SIMULTANEOS = 6; // cuántos fotogramas se preparan a la vez como máximo
 export function cargarFotogramas(carpeta, total, paso, alCargar) {
   const pedidos = [];
   for (let i = 1; i <= total; i += paso) {
-    // padStart(3, '0') convierte 7 en "007" → frames/portada/f007.webp (o frames-movil/...)
-    const url = `${import.meta.env.BASE_URL}${CARPETA}/${carpeta}/f${String(i).padStart(3, '0')}.webp`;
+    // padStart(3, '0') convierte 7 en "007" → frames/portada/f007.webp
+    const url = `${import.meta.env.BASE_URL}frames/${carpeta}/f${String(i).padStart(3, '0')}.webp`;
     // fetch descarga el archivo; blob() lo guarda comprimido en memoria.
     pedidos.push(fetch(url).then((r) => r.blob()).then((b) => { alCargar(); return b; }));
   }
