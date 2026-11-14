@@ -61,8 +61,13 @@ document.documentElement.classList.add('cargando');
 const PASO = celular ? 2 : 1;
 // Todas las secciones con data-frames (las escenas de video con scroll).
 const escenas = $$('[data-frames]');
-// Todas las fotos y videos marcados con data-cargar en el HTML.
-const medios = $$('[data-cargar]');
+// Videos de Materiales: en el HTML llevan preload="metadata" (sólo bajan sus
+// datos básicos). En computadora se descargan completos desde ya; en celular
+// se descargan recién al verse (sección 3) y la carga no los espera, para
+// entrar antes al sitio con datos móviles.
+if (!celular) $$('video').forEach((v) => { v.preload = 'auto'; });
+// Todas las fotos y videos marcados con data-cargar en el HTML (en celular, sin los videos).
+const medios = $$('[data-cargar]').filter((m) => !(celular && m.tagName === 'VIDEO'));
 const PESO_MEDIO = 12; // un video o foto cuenta como varios fotogramas
 // Total de "unidades" a cargar: fotogramas de cada escena + fotos/videos.
 // reduce() recorre la lista sumando; Math.ceil redondea hacia arriba.
@@ -330,4 +335,8 @@ ScrollTrigger.create({
 // ---------------------------------------------------------------------------
 ScrollTrigger.refresh();
 document.documentElement.classList.remove('cargando');
+// En celular, GSAP maneja el scroll del dedo (normalizeScroll) en vez del
+// navegador: así las escenas fijas y los fotogramas no se quedan atrás del
+// scroll. Se activa recién aquí, cuando ya se puede bajar.
+if (celular && !quieto) ScrollTrigger.normalizeScroll(true);
 gsap.to('#carga', { autoAlpha: 0, duration: 0.6, delay: 0.15 });

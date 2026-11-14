@@ -159,7 +159,8 @@
        b) .mat-video:   texto largo a la izquierda y video a la derecha.
      El COLOR de cada tarjeta se cambia en style="--c: #......".
      Los videos <video> se reproducen solos al verse (main.js sección 3).
-     data-cargar → la pantalla de carga espera a que esa foto o video cargue.
+     data-cargar → la pantalla de carga espera a que esa foto o video cargue
+                   (en celular no espera a los videos: bajan al verse).
      CSS: sección 6.
      PARA AGREGAR UN MATERIAL: copiar un <div class="mat"> completo, desde su
      apertura hasta su cierre, y cambiar textos, foto, video y color.
@@ -193,7 +194,7 @@
     <div class="mat-video">
       <p>Del almacén al garaje terminado: el policarbonato cubre sin oscurecer. Su estructura de dos caras con cámaras de aire, en la versión alveolar, mantiene el espacio claro y protegido. Se usa en garajes, pérgolas, corredores, tragaluces y cubiertas de piscina, donde la luz es parte del diseño.</p>
       <!-- muted loop playsinline: sin sonido, en bucle y dentro de la página en iPhone -->
-      <figure><video src="/video/policarbonato.mp4" muted loop playsinline preload="auto" data-cargar></video></figure>
+      <figure><video src="/video/policarbonato.mp4" muted loop playsinline preload="metadata" data-cargar></video></figure>
     </div>
   </div>
 
@@ -217,7 +218,7 @@
     <!-- Video horizontal: en CSS se muestra en 4:3 (#mat-pp .mat-video video) -->
     <div class="mat-video">
       <p>La lámina de polipropileno se dobla con la mano y recupera su forma sin marcas ni grietas. Es liviana, se corta con herramientas comunes y se manipula sin equipo pesado, por eso conviene en viviendas, ampliaciones y cubiertas donde se busca rendimiento sin cargar la estructura.</p>
-      <figure><video src="/video/polipropileno.mp4" muted loop playsinline preload="auto" data-cargar></video></figure>
+      <figure><video src="/video/polipropileno.mp4" muted loop playsinline preload="metadata" data-cargar></video></figure>
     </div>
   </div>
 
@@ -244,7 +245,7 @@
     </article>
     <div class="mat-video">
       <p>Así se instala una cubierta de PVC: las láminas se asientan sobre la estructura, se traslapan y se fijan, y el techo queda con el acabado de una teja colonial. Es una opción para casas, locales y bodegas, sobre todo donde hay mucha humedad.</p>
-      <figure><video src="/video/pvc.mp4" muted loop playsinline preload="auto" data-cargar></video></figure>
+      <figure><video src="/video/pvc.mp4" muted loop playsinline preload="metadata" data-cargar></video></figure>
     </div>
   </div>
 </section>
